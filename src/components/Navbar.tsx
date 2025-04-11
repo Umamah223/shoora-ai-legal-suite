@@ -2,15 +2,18 @@
 import { Link } from 'react-router-dom';
 import { Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar = () => {
+  const isMobile = useIsMobile();
+
   return (
     <nav className="sticky top-0 z-50 bg-[#D4AF37] w-full py-2.5 px-4 md:px-8">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 md:gap-8">
           <Link to="/" className="font-bold text-2xl text-white">Shoora</Link>
           
-          <div className="hidden md:flex items-center gap-5">
+          <div className="hidden md:flex items-center gap-5 md:ml-8">
             <Link to="/library" className="text-white hover:text-shoora-offwhite">
               Digital Library
             </Link>
@@ -30,12 +33,12 @@ const Navbar = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="bg-white text-shoora-gold hover:bg-shoora-offwhite">
+          <Button variant="outline" className="bg-white text-shoora-gold hover:bg-shoora-offwhite hidden xs:inline-flex">
             Login
           </Button>
           
           <Link to="/signup">
-            <Button className="bg-shoora-darkgray text-white hover:bg-shoora-darkgray/90">
+            <Button className="bg-shoora-darkgray text-white hover:bg-shoora-darkgray/90 text-xs md:text-sm">
               Sign up to read
             </Button>
           </Link>

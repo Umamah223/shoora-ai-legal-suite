@@ -40,10 +40,10 @@ const ChatBubble = ({ message, isUser, isTyping = false }: ChatBubbleProps) => {
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-lg p-4 ${
+      className={`rounded-lg p-4 max-w-[90%] md:max-w-[80%] lg:max-w-[70%] ${
         isUser 
-          ? 'ml-auto bg-[#F8F9FA] border border-gray-200 text-gray-800 max-w-[80%]' 
-          : 'mr-auto bg-white border border-gray-200 shadow-sm text-gray-700 max-w-[80%]'
+          ? 'ml-auto bg-[#F8F9FA] border border-gray-200 text-gray-800' 
+          : 'mr-auto bg-white border border-gray-200 shadow-sm text-gray-700'
       }`}
     >
       {isUser ? (

@@ -5,6 +5,7 @@ import { MessageSquare, FileText, Upload, Paperclip, Send, ChevronDown, Info, Ch
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ChatBubble from '@/components/ChatBubble';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const exampleQuestions = [
   {
@@ -42,6 +43,7 @@ const LegalAssistant = () => {
   const [activeTab, setActiveTab] = useState<'ask' | 'draft' | 'summarize' | 'documents'>('ask');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [selectedMatchOptions, setSelectedMatchOptions] = useState<string[]>(["Match Law"]);
+  const isMobile = useIsMobile();
   
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -145,17 +147,17 @@ const LegalAssistant = () => {
       <main className="flex-grow flex flex-col bg-white">
         <div className="w-full h-full flex">
           {/* Left sidebar */}
-          <div className="w-16 bg-gray-100 border-r flex flex-col items-center py-5 hidden md:flex">
+          <div className="w-16 md:w-20 bg-gray-100 border-r flex flex-col items-center py-5 hidden md:flex">
             <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center mb-8">
               <span className="font-bold text-[#987B30]">P</span>
             </div>
             
             <div className="space-y-8 mt-4">
-              <div className="flex flex-col items-center text-gray-500 cursor-pointer">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#D4AF37] transition-colors">
                 <MessageSquare className="w-5 h-5" />
                 <span className="text-xs mt-1">Chat</span>
               </div>
-              <div className="flex flex-col items-center text-gray-500 cursor-pointer">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#D4AF37] transition-colors">
                 <FileText className="w-5 h-5" />
                 <span className="text-xs mt-1">Docs</span>
               </div>
@@ -165,56 +167,56 @@ const LegalAssistant = () => {
           {/* Main content area */}
           <div className="flex-grow flex flex-col">
             {/* Header */}
-            <div className="p-5 border-b">
+            <div className="p-4 md:p-5 border-b">
               <h2 className="text-xl font-semibold text-gray-800">Welcome back, Alex</h2>
               <p className="text-gray-600 text-sm">Let's get started. Which legal task can AI accelerate for you today?</p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 mt-4">
                 <button
                   onClick={() => setActiveTab('ask')}
-                  className={`flex items-center gap-2 p-3 rounded border ${
+                  className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'ask' 
                       ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <MessageSquare className="h-5 w-5" />
+                  <MessageSquare className="h-4 w-4 md:h-5 md:w-5" />
                   <span>Ask</span>
                 </button>
                 
                 <button
                   onClick={handleDraft}
-                  className={`flex items-center gap-2 p-3 rounded border ${
+                  className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'draft' 
                       ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <FileText className="h-5 w-5" />
+                  <FileText className="h-4 w-4 md:h-5 md:w-5" />
                   <span>Draft</span>
                 </button>
                 
                 <button
                   onClick={handleSummarize}
-                  className={`flex items-center gap-2 p-3 rounded border ${
+                  className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'summarize' 
                       ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <FileText className="h-5 w-5" />
+                  <FileText className="h-4 w-4 md:h-5 md:w-5" />
                   <span>Summarize</span>
                 </button>
                 
                 <button
                   onClick={handleDocuments}
-                  className={`flex items-center gap-2 p-3 rounded border ${
+                  className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'documents' 
                       ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <Upload className="h-5 w-5" />
+                  <Upload className="h-4 w-4 md:h-5 md:w-5" />
                   <span>Documents</span>
                 </button>
               </div>
@@ -222,10 +224,10 @@ const LegalAssistant = () => {
           
             {/* Chat area */}
             {messages.length === 0 ? (
-              <div className="flex-grow p-5 overflow-y-auto">
+              <div className="flex-grow p-4 md:p-5 overflow-y-auto">
                 <div className="mt-2">
                   <p className="font-medium text-gray-700 mb-3">Examples of legal questions to ask:</p>
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {exampleQuestions.map((q) => (
                       <div
                         key={q.id}
@@ -249,8 +251,8 @@ const LegalAssistant = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex-grow p-5 overflow-y-auto">
-                <div className="space-y-4">
+              <div className="flex-grow p-4 md:p-5 overflow-y-auto">
+                <div className="space-y-4 max-w-4xl mx-auto">
                   {messages.map((msg) => (
                     <ChatBubble 
                       key={msg.id} 
@@ -269,56 +271,58 @@ const LegalAssistant = () => {
             )}
             
             {/* Footer with input */}
-            <div className="border-t p-4">
-              <div className="flex flex-wrap mb-3 gap-2">
-                {["Match Law", "Match Case", "Match Journal"].map(option => (
-                  <button 
-                    key={option}
-                    onClick={() => toggleMatchOption(option)}
-                    className={`px-3 py-1 text-xs rounded-full flex items-center gap-1
-                      ${selectedMatchOptions.includes(option) 
-                        ? 'bg-[#D4AF37] text-white' 
-                        : 'bg-gray-100 text-gray-700'}`}
-                  >
-                    {selectedMatchOptions.includes(option) && <Check className="w-3 h-3" />}
-                    {option}
-                  </button>
-                ))}
-              </div>
-              
-              <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37]">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Can foreigners own property in the UAE?"
-                  className="flex-grow py-3 px-4 bg-transparent outline-none"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      handleSendMessage();
-                    }
-                  }}
-                />
-                <button className="p-2 text-gray-500 hover:text-[#D4AF37]">
-                  <Paperclip className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={handleSendMessage}
-                  className="bg-[#D4AF37] text-white p-2 m-1 rounded-full hover:bg-[#D4AF37]/80"
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
-              
-              <div className="flex justify-between items-center mt-3 text-xs text-gray-500">
-                <div className="flex items-center gap-1">
-                  <span>Jurisdiction: UAE</span>
-                  <ChevronDown className="w-3 h-3" />
+            <div className="border-t p-3 md:p-4">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex flex-wrap mb-3 gap-2">
+                  {["Match Law", "Match Case", "Match Journal"].map(option => (
+                    <button 
+                      key={option}
+                      onClick={() => toggleMatchOption(option)}
+                      className={`px-3 py-1 text-xs rounded-full flex items-center gap-1
+                        ${selectedMatchOptions.includes(option) 
+                          ? 'bg-[#D4AF37] text-white' 
+                          : 'bg-gray-100 text-gray-700'}`}
+                    >
+                      {selectedMatchOptions.includes(option) && <Check className="w-3 h-3" />}
+                      {option}
+                    </button>
+                  ))}
                 </div>
                 
-                <div className="flex items-center gap-2">
-                  <button className="hover:text-gray-700">Clear conversation</button>
-                  <Info className="w-4 h-4" />
+                <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37]">
+                  <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Can foreigners own property in the UAE?"
+                    className="flex-grow py-3 px-4 bg-transparent outline-none"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleSendMessage();
+                      }
+                    }}
+                  />
+                  <button className="p-2 text-gray-500 hover:text-[#D4AF37]">
+                    <Paperclip className="w-5 h-5" />
+                  </button>
+                  <button 
+                    onClick={handleSendMessage}
+                    className="bg-[#D4AF37] text-white p-2 m-1 rounded-full hover:bg-[#D4AF37]/80"
+                  >
+                    <Send className="w-5 h-5" />
+                  </button>
+                </div>
+                
+                <div className="flex justify-between items-center mt-3 text-xs text-gray-500">
+                  <div className="flex items-center gap-1">
+                    <span>Jurisdiction: UAE</span>
+                    <ChevronDown className="w-3 h-3" />
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <button className="hover:text-gray-700">Clear conversation</button>
+                    <Info className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
             </div>
