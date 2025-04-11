@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, FileText, List, Upload, ChevronDown, Send, User, X, Paperclip } from 'lucide-react';
+import { MessageSquare, FileText, List, Upload, ChevronDown, Send, X, Paperclip, BookOpen, Shield, Scale, AlertCircle } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ChatBubble from '@/components/ChatBubble';
@@ -145,37 +145,37 @@ const LegalAssistant = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow flex bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800">
+      <main className="flex-grow flex bg-gradient-to-br from-[#F8F4E3] via-[#F8F7F1] to-[#FDFBF0]">
         <div className="container mx-auto max-w-screen-xl p-4 flex h-[calc(100vh-184px)]">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-indigo-800/30 backdrop-blur-sm rounded-l-lg hidden md:flex flex-col w-16 border-r border-white/10"
+            className="bg-[#F0E6C6]/60 backdrop-blur-sm rounded-l-lg hidden md:flex flex-col w-16 border-r border-[#D4AF37]/20"
           >
             <div className="flex flex-col items-center gap-6 py-6">
-              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                <span className="text-purple-200 font-bold text-lg">P</span>
+              <div className="w-8 h-8 bg-[#D4AF37]/20 rounded-lg flex items-center justify-center">
+                <span className="text-[#987B30] font-bold text-lg">S</span>
               </div>
               
               <div className="flex flex-col items-center gap-6 mt-8">
-                <div className="flex flex-col items-center text-white/70 hover:text-white cursor-pointer group">
-                  <MessageSquare className="h-6 w-6" />
+                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
+                  <BookOpen className="h-6 w-6" />
                   <span className="text-xs mt-1">Legal Research</span>
                 </div>
                 
-                <div className="flex flex-col items-center text-white/70 hover:text-white cursor-pointer group">
-                  <FileText className="h-6 w-6" />
+                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
+                  <Scale className="h-6 w-6" />
                   <span className="text-xs mt-1">Practical Guidance</span>
                 </div>
                 
-                <div className="flex flex-col items-center text-white/70 hover:text-white cursor-pointer group">
-                  <List className="h-6 w-6" />
+                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
+                  <Shield className="h-6 w-6" />
                   <span className="text-xs mt-1">Document Analysis</span>
                 </div>
                 
-                <div className="flex flex-col items-center text-white/70 hover:text-white cursor-pointer group">
-                  <Upload className="h-6 w-6" />
+                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
+                  <AlertCircle className="h-6 w-6" />
                   <span className="text-xs mt-1">Legal News Hub</span>
                 </div>
               </div>
@@ -186,10 +186,10 @@ const LegalAssistant = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-indigo-100/90 backdrop-blur-sm flex-grow rounded-r-lg overflow-hidden flex flex-col"
+            className="bg-white/90 backdrop-blur-sm flex-grow rounded-r-lg overflow-hidden flex flex-col shadow-lg"
           >
-            <div className="p-6 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-              <h1 className="text-2xl font-bold text-gray-800">Welcome back, Alex</h1>
+            <div className="p-6 bg-gradient-to-r from-[#F0E6C6] to-[#F8F7F1] backdrop-blur-sm border-b border-[#D4AF37]/20">
+              <h1 className="text-2xl font-bold text-[#987B30]">Welcome back, Alex</h1>
               <p className="text-gray-600">Let's get started. Which legal task can AI accelerate for you today?</p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
@@ -197,7 +197,7 @@ const LegalAssistant = () => {
                   onClick={() => setActiveTab('ask')}
                   className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
                     activeTab === 'ask' 
-                      ? 'bg-shoora-gold text-white' 
+                      ? 'bg-[#D4AF37] text-white' 
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -209,7 +209,7 @@ const LegalAssistant = () => {
                   onClick={handleDraft}
                   className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
                     activeTab === 'draft' 
-                      ? 'bg-shoora-gold text-white' 
+                      ? 'bg-[#D4AF37] text-white' 
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -221,7 +221,7 @@ const LegalAssistant = () => {
                   onClick={handleSummarize}
                   className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
                     activeTab === 'summarize' 
-                      ? 'bg-shoora-gold text-white' 
+                      ? 'bg-[#D4AF37] text-white' 
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -233,7 +233,7 @@ const LegalAssistant = () => {
                   onClick={handleDocuments}
                   className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
                     activeTab === 'documents' 
-                      ? 'bg-shoora-gold text-white' 
+                      ? 'bg-[#D4AF37] text-white' 
                       : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                   }`}
                 >
@@ -253,7 +253,7 @@ const LegalAssistant = () => {
                         <div
                           key={q.id}
                           onClick={() => handleExampleQuestion(q.question, q.answer)}
-                          className="p-2 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50"
+                          className="p-4 bg-white rounded-lg border border-[#D4AF37]/20 cursor-pointer hover:bg-[#F0E6C6]/20 transition-colors duration-200"
                         >
                           {q.question}
                         </div>
@@ -264,18 +264,18 @@ const LegalAssistant = () => {
                   <div className="mt-6">
                     <p className="text-sm text-gray-600 mb-2">Includes:</p>
                     <div className="flex flex-wrap gap-4">
-                      <span className="text-sm text-gray-700">Case Law</span>
-                      <span className="text-sm text-gray-700">|</span>
-                      <span className="text-sm text-gray-700">Codes, Rules & Constitutions</span>
-                      <span className="text-sm text-gray-700">|</span>
-                      <span className="text-sm text-gray-700">Practical Guidance</span>
-                      <span className="text-sm text-gray-700">|</span>
-                      <span className="text-sm text-gray-700">Treatises</span>
+                      <span className="text-sm text-[#987B30]">Case Law</span>
+                      <span className="text-sm text-gray-400">|</span>
+                      <span className="text-sm text-[#987B30]">Codes, Rules & Constitutions</span>
+                      <span className="text-sm text-gray-400">|</span>
+                      <span className="text-sm text-[#987B30]">Practical Guidance</span>
+                      <span className="text-sm text-gray-400">|</span>
+                      <span className="text-sm text-[#987B30]">Treatises</span>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="flex-grow p-6 overflow-y-auto">
+                <div className="flex-grow p-6 overflow-y-auto bg-[#FDFBF0]/50">
                   <div className="space-y-4">
                     {messages.map((msg) => (
                       <ChatBubble 
@@ -294,12 +294,12 @@ const LegalAssistant = () => {
                 </div>
               )}
               
-              <div className="p-4 border-t border-gray-200 bg-white">
+              <div className="p-4 border-t border-[#D4AF37]/20 bg-white">
                 <div className="flex items-center gap-2 mb-2">
                   <button
                     onClick={() => setShowFilters(!showFilters)}
                     className={`text-xs px-2 py-1 rounded-full border ${
-                      showFilters ? 'bg-shoora-gold text-white border-shoora-gold' : 'border-gray-300 text-gray-700'
+                      showFilters ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'border-gray-300 text-gray-700'
                     }`}
                   >
                     <span className="flex items-center gap-1">
@@ -324,9 +324,9 @@ const LegalAssistant = () => {
                 
                 <div className="relative">
                   {selectedFile && (
-                    <div className="absolute bottom-full mb-2 flex items-center gap-2 bg-gray-100 rounded-md p-2">
+                    <div className="absolute bottom-full mb-2 flex items-center gap-2 bg-[#F0E6C6]/40 rounded-md p-2">
                       <div className="flex items-center gap-2">
-                        <Paperclip className="h-4 w-4 text-gray-500" />
+                        <Paperclip className="h-4 w-4 text-[#987B30]" />
                         <span className="text-sm text-gray-700 truncate max-w-[200px]">
                           {selectedFile.name}
                         </span>
@@ -340,7 +340,7 @@ const LegalAssistant = () => {
                     </div>
                   )}
                   
-                  <div className="flex items-center gap-2 bg-gray-100 rounded-lg pr-2">
+                  <div className="flex items-center gap-2 bg-[#F8F7F1] rounded-lg pr-2">
                     <input
                       type="text"
                       placeholder="Ask a legal question"
@@ -354,7 +354,7 @@ const LegalAssistant = () => {
                       }}
                     />
                     
-                    <label className="cursor-pointer text-gray-500 hover:text-gray-700">
+                    <label className="cursor-pointer text-[#987B30] hover:text-[#D4AF37]">
                       <Paperclip className="h-5 w-5" />
                       <input 
                         type="file" 
@@ -365,7 +365,7 @@ const LegalAssistant = () => {
                     
                     <button
                       onClick={handleSendMessage}
-                      className="bg-shoora-gold text-white p-2 rounded-full hover:bg-shoora-gold/90 transition-colors"
+                      className="bg-[#D4AF37] text-white p-2 rounded-full hover:bg-[#987B30] transition-colors"
                     >
                       <Send className="h-5 w-5" />
                     </button>
@@ -374,16 +374,16 @@ const LegalAssistant = () => {
                 
                 <div className="flex justify-between items-center mt-2">
                   <div className="flex items-center gap-2">
-                    <button className="text-xs text-gray-500 hover:text-gray-700">Select Jurisdiction</button>
+                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Select Jurisdiction</button>
                     <ChevronDown className="h-3 w-3 text-gray-500" />
                   </div>
                   
                   <div className="flex gap-2">
-                    <button className="text-xs text-gray-500 hover:text-gray-700">Terms & Conditions</button>
+                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Terms & Conditions</button>
                     <span className="text-gray-500">|</span>
-                    <button className="text-xs text-gray-500 hover:text-gray-700">Privacy Policy</button>
+                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Privacy Policy</button>
                     <span className="text-gray-500">|</span>
-                    <button className="text-xs text-gray-500 hover:text-gray-700">Cookie Policy</button>
+                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Cookie Policy</button>
                   </div>
                 </div>
               </div>

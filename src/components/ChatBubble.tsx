@@ -40,16 +40,20 @@ const ChatBubble = ({ message, isUser, isTyping = false }: ChatBubbleProps) => {
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className={`chat-bubble ${isUser ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}
+      className={`rounded-lg p-4 max-w-[80%] ${
+        isUser 
+          ? 'bg-[#F0E6C6] ml-auto text-gray-800' 
+          : 'bg-white border border-[#D4AF37]/20 mr-auto shadow-sm'
+      }`}
     >
       {isUser ? (
-        <div>{message}</div>
+        <div className="font-medium">{message}</div>
       ) : (
-        <div>
+        <div className="prose prose-sm max-w-none text-gray-700">
           {isTyping && !isComplete ? (
             <>
               {displayedText}
-              <span className="typing-indicator"></span>
+              <span className="inline-block w-2 h-4 bg-[#D4AF37] ml-1 animate-pulse rounded-full"></span>
             </>
           ) : (
             displayedText
