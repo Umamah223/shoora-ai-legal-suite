@@ -40,16 +40,16 @@ const ChatBubble = ({ message, isUser, isTyping = false }: ChatBubbleProps) => {
       initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-lg p-4 max-w-[80%] ${
+      className={`rounded-lg p-4 ${
         isUser 
-          ? 'bg-[#F0E6C6] ml-auto text-gray-800' 
-          : 'bg-white border border-[#D4AF37]/20 mr-auto shadow-sm'
+          ? 'ml-auto bg-[#F8F9FA] border border-gray-200 text-gray-800 max-w-[80%]' 
+          : 'mr-auto bg-white border border-gray-200 shadow-sm text-gray-700 max-w-[80%]'
       }`}
     >
       {isUser ? (
         <div className="font-medium">{message}</div>
       ) : (
-        <div className="prose prose-sm max-w-none text-gray-700">
+        <div className="prose prose-sm max-w-none">
           {isTyping && !isComplete ? (
             <>
               {displayedText}

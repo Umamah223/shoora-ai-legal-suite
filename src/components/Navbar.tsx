@@ -9,37 +9,39 @@ const Navbar = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-8">
           <Link to="/" className="font-bold text-2xl text-white">Shoora</Link>
+          
+          <div className="hidden md:flex items-center gap-5">
+            <Link to="/library" className="text-white hover:text-shoora-offwhite">
+              Digital Library
+            </Link>
+            
+            <Link to="/assistant" className="text-white hover:text-shoora-offwhite">
+              Legal Assistant
+            </Link>
+            
+            <Link to="/court-simulation" className="text-white hover:text-shoora-offwhite">
+              Virtual Court Simulation
+            </Link>
+            
+            <Link to="/accessibility" className="text-white hover:text-shoora-offwhite">
+              Accessibility
+            </Link>
+          </div>
         </div>
         
-        <div className="flex items-center gap-4">
-          <Link to="/library" className="text-white hover:text-shoora-offwhite">
-            Digital Library
-          </Link>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" className="bg-white text-shoora-gold hover:bg-shoora-offwhite">
+            Login
+          </Button>
           
-          <Link to="/assistant" className="text-white hover:text-shoora-offwhite">
-            Legal Assistant
-          </Link>
-          
-          <Link to="/court-simulation" className="text-white hover:text-shoora-offwhite">
-            Virtual Court Simulation
-          </Link>
-          
-          <Link to="/accessibility" className="text-white hover:text-shoora-offwhite">
-            Accessibility
-          </Link>
-          
-          <div className="flex items-center gap-2">
-            <Button variant="outline" className="bg-white text-shoora-gold hover:bg-shoora-offwhite">
-              Login
-            </Button>
-            
+          <Link to="/signup">
             <Button className="bg-shoora-darkgray text-white hover:bg-shoora-darkgray/90">
               Sign up to read
             </Button>
-            
-            <div className="p-2 hover:bg-shoora-gold-dark/20 rounded-full cursor-pointer">
-              <Globe className="h-5 w-5 text-white" />
-            </div>
+          </Link>
+          
+          <div className="p-2 hover:bg-shoora-gold-dark/20 rounded-full cursor-pointer">
+            <Globe className="h-5 w-5 text-white" />
           </div>
         </div>
       </div>

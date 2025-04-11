@@ -47,7 +47,7 @@ const Accessibility = () => {
                 <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
                   <div className="relative">
                     <img 
-                      src="/public/lovable-uploads/3cc903e1-8885-418a-b840-1d8fcb3f8c96.png" 
+                      src="/public/lovable-uploads/0e369dd4-06c6-4c83-ab77-a7b01ad2cd21.png" 
                       alt="Accessibility Video" 
                       className="w-full aspect-video object-cover"
                     />
@@ -197,7 +197,7 @@ const Accessibility = () => {
                     className="mt-6 bg-white rounded-lg shadow-md overflow-hidden"
                   >
                     <img 
-                      src="/public/lovable-uploads/deccab18-1319-41d1-aa79-9a95f23f821c.png" 
+                      src="/public/lovable-uploads/8f73e578-f981-4218-a76c-126c7e577582.png" 
                       alt="Sign Language Interpreter" 
                       className="w-full object-cover"
                     />
@@ -286,7 +286,7 @@ const Accessibility = () => {
                 
                 <div className="md:w-1/3">
                   <img 
-                    src="/public/lovable-uploads/3cc903e1-8885-418a-b840-1d8fcb3f8c96.png" 
+                    src="/public/lovable-uploads/0e369dd4-06c6-4c83-ab77-a7b01ad2cd21.png" 
                     alt="Accessibility Support" 
                     className="rounded-lg shadow-md"
                   />

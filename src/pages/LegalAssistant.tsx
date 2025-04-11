@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, FileText, List, Upload, ChevronDown, Send, X, Paperclip, BookOpen, Shield, Scale, AlertCircle } from 'lucide-react';
+import { MessageSquare, FileText, Upload, Paperclip, Send, ChevronDown, Info, Check } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ChatBubble from '@/components/ChatBubble';
@@ -36,13 +36,12 @@ interface Message {
 }
 
 const LegalAssistant = () => {
-  const [activeTab, setActiveTab] = useState<'ask' | 'draft' | 'summarize' | 'documents'>('ask');
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
+  const [activeTab, setActiveTab] = useState<'ask' | 'draft' | 'summarize' | 'documents'>('ask');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedMatchOptions, setSelectedMatchOptions] = useState<string[]>(["Match Law"]);
   
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -93,21 +92,19 @@ const LegalAssistant = () => {
     }, 1500);
   };
   
+  const toggleMatchOption = (option: string) => {
+    if (selectedMatchOptions.includes(option)) {
+      setSelectedMatchOptions(prev => prev.filter(item => item !== option));
+    } else {
+      setSelectedMatchOptions(prev => [...prev, option]);
+    }
+  };
+  
   useEffect(() => {
     // Scroll to bottom when messages change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
-    }
-  };
-
-  const handleFileRemove = () => {
-    setSelectedFile(null);
-  };
-  
   const handleDraft = () => {
     setActiveTab('draft');
     setMessages([
@@ -145,60 +142,40 @@ const LegalAssistant = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow flex bg-gradient-to-br from-[#F8F4E3] via-[#F8F7F1] to-[#FDFBF0]">
-        <div className="container mx-auto max-w-screen-xl p-4 flex h-[calc(100vh-184px)]">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-[#F0E6C6]/60 backdrop-blur-sm rounded-l-lg hidden md:flex flex-col w-16 border-r border-[#D4AF37]/20"
-          >
-            <div className="flex flex-col items-center gap-6 py-6">
-              <div className="w-8 h-8 bg-[#D4AF37]/20 rounded-lg flex items-center justify-center">
-                <span className="text-[#987B30] font-bold text-lg">S</span>
+      <main className="flex-grow flex flex-col bg-white">
+        <div className="w-full h-full flex">
+          {/* Left sidebar */}
+          <div className="w-16 bg-gray-100 border-r flex flex-col items-center py-5 hidden md:flex">
+            <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center mb-8">
+              <span className="font-bold text-[#987B30]">P</span>
+            </div>
+            
+            <div className="space-y-8 mt-4">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer">
+                <MessageSquare className="w-5 h-5" />
+                <span className="text-xs mt-1">Chat</span>
               </div>
-              
-              <div className="flex flex-col items-center gap-6 mt-8">
-                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
-                  <BookOpen className="h-6 w-6" />
-                  <span className="text-xs mt-1">Legal Research</span>
-                </div>
-                
-                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
-                  <Scale className="h-6 w-6" />
-                  <span className="text-xs mt-1">Practical Guidance</span>
-                </div>
-                
-                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
-                  <Shield className="h-6 w-6" />
-                  <span className="text-xs mt-1">Document Analysis</span>
-                </div>
-                
-                <div className="flex flex-col items-center text-[#987B30] hover:text-[#D4AF37] cursor-pointer group">
-                  <AlertCircle className="h-6 w-6" />
-                  <span className="text-xs mt-1">Legal News Hub</span>
-                </div>
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer">
+                <FileText className="w-5 h-5" />
+                <span className="text-xs mt-1">Docs</span>
               </div>
             </div>
-          </motion.div>
+          </div>
           
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="bg-white/90 backdrop-blur-sm flex-grow rounded-r-lg overflow-hidden flex flex-col shadow-lg"
-          >
-            <div className="p-6 bg-gradient-to-r from-[#F0E6C6] to-[#F8F7F1] backdrop-blur-sm border-b border-[#D4AF37]/20">
-              <h1 className="text-2xl font-bold text-[#987B30]">Welcome back, Alex</h1>
-              <p className="text-gray-600">Let's get started. Which legal task can AI accelerate for you today?</p>
+          {/* Main content area */}
+          <div className="flex-grow flex flex-col">
+            {/* Header */}
+            <div className="p-5 border-b">
+              <h2 className="text-xl font-semibold text-gray-800">Welcome back, Alex</h2>
+              <p className="text-gray-600 text-sm">Let's get started. Which legal task can AI accelerate for you today?</p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
                 <button
                   onClick={() => setActiveTab('ask')}
-                  className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
+                  className={`flex items-center gap-2 p-3 rounded border ${
                     activeTab === 'ask' 
-                      ? 'bg-[#D4AF37] text-white' 
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <MessageSquare className="h-5 w-5" />
@@ -207,10 +184,10 @@ const LegalAssistant = () => {
                 
                 <button
                   onClick={handleDraft}
-                  className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
+                  className={`flex items-center gap-2 p-3 rounded border ${
                     activeTab === 'draft' 
-                      ? 'bg-[#D4AF37] text-white' 
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <FileText className="h-5 w-5" />
@@ -219,22 +196,22 @@ const LegalAssistant = () => {
                 
                 <button
                   onClick={handleSummarize}
-                  className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
+                  className={`flex items-center gap-2 p-3 rounded border ${
                     activeTab === 'summarize' 
-                      ? 'bg-[#D4AF37] text-white' 
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
-                  <List className="h-5 w-5" />
+                  <FileText className="h-5 w-5" />
                   <span>Summarize</span>
                 </button>
                 
                 <button
                   onClick={handleDocuments}
-                  className={`flex items-center justify-center gap-2 p-4 rounded-lg font-medium ${
+                  className={`flex items-center gap-2 p-3 rounded border ${
                     activeTab === 'documents' 
-                      ? 'bg-[#D4AF37] text-white' 
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
                   <Upload className="h-5 w-5" />
@@ -242,153 +219,110 @@ const LegalAssistant = () => {
                 </button>
               </div>
             </div>
-            
-            <div className="flex-grow flex flex-col overflow-hidden">
-              {messages.length === 0 ? (
-                <div className="flex-grow flex flex-col p-6 overflow-y-auto">
-                  <div className="mt-4">
-                    <p className="font-medium text-gray-700 mb-3">Examples of legal questions to ask:</p>
-                    <div className="space-y-2">
-                      {exampleQuestions.map((q) => (
-                        <div
-                          key={q.id}
-                          onClick={() => handleExampleQuestion(q.question, q.answer)}
-                          className="p-4 bg-white rounded-lg border border-[#D4AF37]/20 cursor-pointer hover:bg-[#F0E6C6]/20 transition-colors duration-200"
-                        >
-                          {q.question}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6">
-                    <p className="text-sm text-gray-600 mb-2">Includes:</p>
-                    <div className="flex flex-wrap gap-4">
-                      <span className="text-sm text-[#987B30]">Case Law</span>
-                      <span className="text-sm text-gray-400">|</span>
-                      <span className="text-sm text-[#987B30]">Codes, Rules & Constitutions</span>
-                      <span className="text-sm text-gray-400">|</span>
-                      <span className="text-sm text-[#987B30]">Practical Guidance</span>
-                      <span className="text-sm text-gray-400">|</span>
-                      <span className="text-sm text-[#987B30]">Treatises</span>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex-grow p-6 overflow-y-auto bg-[#FDFBF0]/50">
-                  <div className="space-y-4">
-                    {messages.map((msg) => (
-                      <ChatBubble 
-                        key={msg.id} 
-                        message={msg.content} 
-                        isUser={msg.isUser} 
-                        isTyping={isTyping && !msg.isUser && msg.id === messages[messages.length - 1].id}
-                      />
-                    ))}
-                    
-                    {isTyping && messages[messages.length - 1]?.isUser && (
-                      <ChatBubble message="" isUser={false} isTyping={true} />
-                    )}
-                    <div ref={messagesEndRef} />
-                  </div>
-                </div>
-              )}
-              
-              <div className="p-4 border-t border-[#D4AF37]/20 bg-white">
-                <div className="flex items-center gap-2 mb-2">
-                  <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className={`text-xs px-2 py-1 rounded-full border ${
-                      showFilters ? 'bg-[#D4AF37] text-white border-[#D4AF37]' : 'border-gray-300 text-gray-700'
-                    }`}
-                  >
-                    <span className="flex items-center gap-1">
-                      Filters <ChevronDown className="h-3 w-3" />
-                    </span>
-                  </button>
-                  
-                  {showFilters && (
-                    <>
-                      <button className="text-xs px-2 py-1 rounded-full border border-gray-300 hover:bg-gray-50">
-                        Match Law
-                      </button>
-                      <button className="text-xs px-2 py-1 rounded-full border border-gray-300 hover:bg-gray-50">
-                        Match Case
-                      </button>
-                      <button className="text-xs px-2 py-1 rounded-full border border-gray-300 hover:bg-gray-50">
-                        Match Journal
-                      </button>
-                    </>
-                  )}
-                </div>
-                
-                <div className="relative">
-                  {selectedFile && (
-                    <div className="absolute bottom-full mb-2 flex items-center gap-2 bg-[#F0E6C6]/40 rounded-md p-2">
-                      <div className="flex items-center gap-2">
-                        <Paperclip className="h-4 w-4 text-[#987B30]" />
-                        <span className="text-sm text-gray-700 truncate max-w-[200px]">
-                          {selectedFile.name}
-                        </span>
-                      </div>
-                      <button 
-                        onClick={handleFileRemove}
-                        className="text-gray-500 hover:text-gray-700"
+          
+            {/* Chat area */}
+            {messages.length === 0 ? (
+              <div className="flex-grow p-5 overflow-y-auto">
+                <div className="mt-2">
+                  <p className="font-medium text-gray-700 mb-3">Examples of legal questions to ask:</p>
+                  <div className="space-y-3">
+                    {exampleQuestions.map((q) => (
+                      <div
+                        key={q.id}
+                        onClick={() => handleExampleQuestion(q.question, q.answer)}
+                        className="p-3 bg-gray-50 rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
                       >
-                        <X className="h-4 w-4" />
-                      </button>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center gap-2 bg-[#F8F7F1] rounded-lg pr-2">
-                    <input
-                      type="text"
-                      placeholder="Ask a legal question"
-                      className="flex-grow py-3 px-4 bg-transparent border-none focus:outline-none"
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          handleSendMessage();
-                        }
-                      }}
-                    />
-                    
-                    <label className="cursor-pointer text-[#987B30] hover:text-[#D4AF37]">
-                      <Paperclip className="h-5 w-5" />
-                      <input 
-                        type="file" 
-                        className="hidden"
-                        onChange={handleFileChange}
-                      />
-                    </label>
-                    
-                    <button
-                      onClick={handleSendMessage}
-                      className="bg-[#D4AF37] text-white p-2 rounded-full hover:bg-[#987B30] transition-colors"
-                    >
-                      <Send className="h-5 w-5" />
-                    </button>
+                        {q.question}
+                      </div>
+                    ))}
                   </div>
                 </div>
                 
-                <div className="flex justify-between items-center mt-2">
-                  <div className="flex items-center gap-2">
-                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Select Jurisdiction</button>
-                    <ChevronDown className="h-3 w-3 text-gray-500" />
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Terms & Conditions</button>
-                    <span className="text-gray-500">|</span>
-                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Privacy Policy</button>
-                    <span className="text-gray-500">|</span>
-                    <button className="text-xs text-gray-500 hover:text-[#987B30]">Cookie Policy</button>
+                <div className="mt-8">
+                  <p className="text-sm text-gray-500 mb-1">Includes:</p>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-700">Case Law</span>
+                    <span className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-700">Codes, Rules & Constitutions</span>
+                    <span className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-700">Practical Guidance</span>
+                    <span className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-700">Treatises</span>
                   </div>
                 </div>
               </div>
+            ) : (
+              <div className="flex-grow p-5 overflow-y-auto">
+                <div className="space-y-4">
+                  {messages.map((msg) => (
+                    <ChatBubble 
+                      key={msg.id} 
+                      message={msg.content} 
+                      isUser={msg.isUser}
+                      isTyping={isTyping && !msg.isUser && msg.id === messages[messages.length - 1].id} 
+                    />
+                  ))}
+                  
+                  {isTyping && messages[messages.length - 1]?.isUser && (
+                    <ChatBubble message="" isUser={false} isTyping={true} />
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+              </div>
+            )}
+            
+            {/* Footer with input */}
+            <div className="border-t p-4">
+              <div className="flex flex-wrap mb-3 gap-2">
+                {["Match Law", "Match Case", "Match Journal"].map(option => (
+                  <button 
+                    key={option}
+                    onClick={() => toggleMatchOption(option)}
+                    className={`px-3 py-1 text-xs rounded-full flex items-center gap-1
+                      ${selectedMatchOptions.includes(option) 
+                        ? 'bg-[#D4AF37] text-white' 
+                        : 'bg-gray-100 text-gray-700'}`}
+                  >
+                    {selectedMatchOptions.includes(option) && <Check className="w-3 h-3" />}
+                    {option}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37]">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Can foreigners own property in the UAE?"
+                  className="flex-grow py-3 px-4 bg-transparent outline-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSendMessage();
+                    }
+                  }}
+                />
+                <button className="p-2 text-gray-500 hover:text-[#D4AF37]">
+                  <Paperclip className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={handleSendMessage}
+                  className="bg-[#D4AF37] text-white p-2 m-1 rounded-full hover:bg-[#D4AF37]/80"
+                >
+                  <Send className="w-5 h-5" />
+                </button>
+              </div>
+              
+              <div className="flex justify-between items-center mt-3 text-xs text-gray-500">
+                <div className="flex items-center gap-1">
+                  <span>Jurisdiction: UAE</span>
+                  <ChevronDown className="w-3 h-3" />
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <button className="hover:text-gray-700">Clear conversation</button>
+                  <Info className="w-4 h-4" />
+                </div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </main>
       
