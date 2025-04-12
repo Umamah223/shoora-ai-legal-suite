@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Monitor, ArrowUpRight, Play, Volume1 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
 
 const Accessibility = () => {
   const [fontSize, setFontSize] = useState(16);
@@ -38,17 +39,19 @@ const Accessibility = () => {
               Making legal resources accessible to everyone with cutting-edge AI technology.
             </motion.p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-16">
+              {/* Left side - Video */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
+                className="md:col-span-6"
               >
                 <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
                   <div className="relative">
                     <img 
-                      src="/public/lovable-uploads/7cbfb857-d2ef-4722-88e7-8f8c969ce522.png" 
-                      alt="Accessibility Video" 
+                      src="/public/lovable-uploads/deccab18-1319-41d1-aa79-9a95f23f821c.png" 
+                      alt="Online Course Lecture" 
                       className="w-full aspect-video object-cover"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -61,13 +64,6 @@ const Accessibility = () => {
                       <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1.5 rounded-md text-sm flex items-center gap-1.5">
                         <Volume1 className="h-4 w-4" />
                         <span>Audio Description</span>
-                      </div>
-                    )}
-                    
-                    {signLanguage && (
-                      <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-1.5 rounded-md text-sm flex items-center gap-1.5">
-                        <span className="text-base">👋</span>
-                        <span>Sign Language</span>
                       </div>
                     )}
                   </div>
@@ -103,12 +99,48 @@ const Accessibility = () => {
                 </div>
               </motion.div>
               
+              {/* Right side - Sign Language Interpreter */}
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
+                className="md:col-span-3"
               >
-                <div className={`rounded-lg overflow-hidden shadow-md ${highContrast ? 'bg-gray-900' : 'bg-white'}`}>
+                {signLanguage ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col"
+                  >
+                    <img 
+                      src="/public/lovable-uploads/8f73e578-f981-4218-a76c-126c7e577582.png" 
+                      alt="Sign Language Interpreter" 
+                      className="w-full flex-grow object-cover"
+                    />
+                    <div className="p-4 bg-black text-white">
+                      <p className="text-center font-medium text-sm">
+                        Sign Language Interpreter
+                      </p>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <div className="bg-gray-200 rounded-lg h-full flex items-center justify-center">
+                    <p className="text-gray-500 p-4 text-center">
+                      Enable sign language interpretation to see the interpreter here
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+              
+              {/* Accessibility Controls */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="md:col-span-3"
+              >
+                <div className={`rounded-lg overflow-hidden shadow-md h-full ${highContrast ? 'bg-gray-900' : 'bg-white'}`}>
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-6" style={{ fontSize: `${fontSize + 4}px` }}>
                       Accessibility Controls
@@ -173,7 +205,7 @@ const Accessibility = () => {
                       
                       <div className="flex items-center justify-between">
                         <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
-                          Sign Language Interpretation
+                          Sign Language
                         </p>
                         <label className="relative inline-flex items-center cursor-pointer">
                           <input 
@@ -188,26 +220,6 @@ const Accessibility = () => {
                     </div>
                   </div>
                 </div>
-                
-                {signLanguage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-6 bg-white rounded-lg shadow-md overflow-hidden"
-                  >
-                    <img 
-                      src="/public/lovable-uploads/8f73e578-f981-4218-a76c-126c7e577582.png" 
-                      alt="Sign Language Interpreter" 
-                      className="w-full object-cover"
-                    />
-                    <div className="p-4 bg-black text-white">
-                      <p className="text-center font-medium">
-                        Hello, I am SignAvatar, a digital avatar that translates speech into Sign
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
               </motion.div>
             </div>
             
@@ -279,14 +291,14 @@ const Accessibility = () => {
                   <p className="text-gray-600 mb-6" style={{ fontSize: `${fontSize}px` }}>
                     Our accessibility team is here to help you with any specific accommodations you may need. Contact us to learn more about how we can support your unique needs.
                   </p>
-                  <button className="shoora-btn-primary">
+                  <Button className="bg-shoora-gold hover:bg-shoora-gold/90 text-white">
                     Contact Our Accessibility Team
-                  </button>
+                  </Button>
                 </div>
                 
                 <div className="md:w-1/3">
                   <img 
-                    src="/public/lovable-uploads/7cbfb857-d2ef-4722-88e7-8f8c969ce522.png" 
+                    src="/public/lovable-uploads/deccab18-1319-41d1-aa79-9a95f23f821c.png" 
                     alt="Accessibility Support" 
                     className="rounded-lg shadow-md"
                   />

@@ -1,109 +1,63 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, MessageSquare, Info, Users, Settings, HelpCircle, Award, FileText } from 'lucide-react';
+import { Send, MessageSquare, Info, Users, Settings, HelpCircle, FileText, Award } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import ChatBubble from '@/components/ChatBubble';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import VirtualChatBubble from '@/components/VirtualChatBubble';
 
 interface Message {
   id: string;
   content: string;
-  role: 'judge' | 'plaintiff' | 'defense' | 'user';
-  animation?: 'gesture' | 'nod' | 'headTurn';
+  sender: string;
+  role: 'judge' | 'plaintiff' | 'defense' | 'user' | 'witness';
+  isActive?: boolean;
 }
 
 interface Participant {
   id: string;
   name: string;
-  role: 'judge' | 'plaintiff' | 'defense' | 'observer';
+  role: 'judge' | 'plaintiff' | 'defense' | 'witness' | 'user';
   avatar: string;
-  position: 'left' | 'center' | 'right' | 'far-right';
+  initials: string;
+  color: string;
 }
 
-const initialMessages: Message[] = [
-  {
-    id: '1',
-    content: "Welcome to today's hearing. We are here to address the case of John Doe vs. ABC Corporation regarding a contract dispute. Plaintiff, please present your opening statement.",
-    role: 'judge',
-    animation: 'gesture'
-  },
-  {
-    id: '2',
-    content: "Your Honor, my client entered into a service agreement with ABC Corporation for software development services. Despite fulfilling all requirements, the defendant has failed to make the final payment of AED 75,000 as stipulated in clause 4.2 of our contract.",
-    role: 'plaintiff',
-    animation: 'nod'
-  },
-  {
-    id: '3',
-    content: "Thank you. Defense, how do you respond to these allegations?",
-    role: 'judge',
-    animation: 'headTurn'
-  },
-  {
-    id: '4',
-    content: "Your Honor, we contest this claim. The contract specified conditions that Mr. Doe did not meet. We had outlined performance benchmarks in section 3.1, and his failure to meet them justified the withheld payment.",
-    role: 'defense'
-  }
-];
-
-const participants: Participant[] = [
-  {
-    id: '1',
-    name: 'Hon. Mohammed Al Qasimi',
-    role: 'judge',
-    avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
-    position: 'center'
-  },
-  {
-    id: '2',
-    name: 'John Doe',
-    role: 'plaintiff',
-    avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
-    position: 'left'
-  },
-  {
-    id: '3',
-    name: 'ABC Corporation',
-    role: 'defense',
-    avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
-    position: 'right'
-  },
-  {
-    id: '4',
-    name: 'You',
-    role: 'observer',
-    avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
-    position: 'far-right'
-  }
-];
-
-const caseTypes = [
-  { id: 'contract', name: 'Contract Dispute' },
-  { id: 'employment', name: 'Employment Termination' },
-  { id: 'property', name: 'Property Dispute' },
-  { id: 'family', name: 'Family Law Case' },
-  { id: 'tenant', name: 'Tenant Disagreement' }
-];
-
-const difficultyLevels = [
-  { id: 'beginner', name: 'Beginner' },
-  { id: 'intermediate', name: 'Intermediate' },
-  { id: 'expert', name: 'Expert' }
-];
-
-const userRoles = [
-  { id: 'plaintiff', name: 'Plaintiff' },
-  { id: 'defense', name: 'Defense' },
-  { id: 'judge', name: 'Judge' },
-  { id: 'observer', name: 'Observer' }
-];
-
 const CourtSimulation = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [isTyping, setIsTyping] = useState(false);
+  const [userInput, setUserInput] = useState('');
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      content: "Welcome to the session. Today we'll be addressing the case of Rafat vs. Afaq regarding the contract dispute. Plaintiff, please begin with your opening statement.",
+      sender: "Hon. Jamal Al-Mahdi",
+      role: 'judge'
+    },
+    {
+      id: '2',
+      content: "Your Honor, my client entered into a service agreement with Afaq Corp for software development. Despite delivering the work, the defendant has failed to pay the agreed amount of AED 75,000.",
+      sender: "Rafat (Plaintiff)",
+      role: 'plaintiff'
+    },
+    {
+      id: '3',
+      content: "Thank you. Defense, your response?",
+      sender: "Hon. Jamal Al-Mahdi",
+      role: 'judge'
+    },
+    {
+      id: '4',
+      content: "Your Honor, we dispute this claim. The deliverables did not meet the quality standards specified in our agreement, justifying our decision to withhold payment.",
+      sender: "Rooz (Representing Afaq)",
+      role: 'defense'
+    }
+  ]);
+  
   const [activeSpeaker, setActiveSpeaker] = useState<string | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
   const [caseType, setCaseType] = useState('contract');
   const [difficultyLevel, setDifficultyLevel] = useState('beginner');
   const [userRole, setUserRole] = useState('observer');
@@ -111,52 +65,123 @@ const CourtSimulation = () => {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
+  const participants: Participant[] = [
+    {
+      id: '1',
+      name: 'Hon. Jamal Al-Mahdi',
+      role: 'judge',
+      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      initials: 'JM',
+      color: 'bg-purple-100 text-purple-600'
+    },
+    {
+      id: '2',
+      name: 'Rafat',
+      role: 'plaintiff',
+      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      initials: 'RA',
+      color: 'bg-blue-100 text-blue-600'
+    },
+    {
+      id: '3',
+      name: 'Rooz',
+      role: 'defense',
+      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      initials: 'RO',
+      color: 'bg-orange-100 text-orange-600'
+    },
+    {
+      id: '4',
+      name: 'John Wilson',
+      role: 'witness',
+      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      initials: 'JW',
+      color: 'bg-green-100 text-green-600'
+    },
+    {
+      id: '5',
+      name: 'You',
+      role: 'user',
+      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      initials: 'YO',
+      color: 'bg-gray-100 text-gray-600'
+    }
+  ];
+
+  const caseTypes = [
+    { id: 'contract', name: 'Contract Dispute' },
+    { id: 'employment', name: 'Employment Termination' },
+    { id: 'property', name: 'Property Dispute' },
+    { id: 'family', name: 'Family Law Case' },
+    { id: 'tenant', name: 'Tenant Disagreement' }
+  ];
+
+  const difficultyLevels = [
+    { id: 'beginner', name: 'Beginner' },
+    { id: 'intermediate', name: 'Intermediate' },
+    { id: 'expert', name: 'Expert' }
+  ];
+
+  const userRoles = [
+    { id: 'plaintiff', name: 'Plaintiff' },
+    { id: 'defense', name: 'Defense' },
+    { id: 'judge', name: 'Judge' },
+    { id: 'observer', name: 'Observer' }
+  ];
+  
   const handleUserMessage = () => {
-    if (!inputValue.trim()) return;
+    if (!userInput.trim()) return;
     
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
-      content: inputValue,
+      content: userInput,
+      sender: "You",
       role: 'user'
     };
     
     setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
+    setUserInput('');
+    setActiveSpeaker('5'); // User is speaking
     setIsTyping(true);
-    setActiveSpeaker(userRole === 'plaintiff' ? '2' : userRole === 'defense' ? '3' : '4');
     
     // Simulate response delay
     setTimeout(() => {
       setActiveSpeaker('1'); // Judge speaks next
+      setIsTyping(true);
       
       // After a delay for judge to start speaking
       setTimeout(() => {
-        let response: Message;
+        const judgeResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          content: "Thank you for your input. Under UAE Civil Code Article 246, contracts must be performed according to their contents. Based on the evidence presented, I'll now consider both perspectives on the quality standards dispute.",
+          sender: "Hon. Jamal Al-Mahdi",
+          role: 'judge'
+        };
         
-        // Judge's response
-        if (Math.random() > 0.5) {
-          response = {
-            id: (Date.now() + 1).toString(),
-            content: "Thank you for your argument. I'll consider that point. The defense raises an important consideration about clause 3.1. According to UAE Civil Code Article 246, both parties must fulfill contractual obligations as per the specifics of the agreement. Can the plaintiff address the performance benchmarks mentioned?",
-            role: 'judge',
-            animation: 'gesture'
-          };
-        } else {
-          // Defense's response
-          setActiveSpeaker('3');
-          response = {
-            id: (Date.now() + 1).toString(),
-            content: "Your Honor, we have documentation showing that the deliverables failed to meet the quality standards specified in section 3.1 of our agreement. Article 272 of UAE Civil Code provides that a contract may be set aside if one party fails to perform their obligations. We have evidence of the plaintiff's failure to meet these standards.",
-            role: 'defense',
-            animation: 'headTurn'
-          };
-        }
-        
-        setMessages((prev) => [...prev, response]);
+        setMessages((prev) => [...prev, judgeResponse]);
         setIsTyping(false);
-        setTimeout(() => setActiveSpeaker(null), 2000);
-      }, 1000);
+        
+        // Switch to defense after judge finishes
+        setTimeout(() => {
+          setActiveSpeaker('3');
+          setIsTyping(true);
+          
+          setTimeout(() => {
+            const defenseResponse: Message = {
+              id: (Date.now() + 2).toString(),
+              content: "Your Honor, I'd like to present documentation showing that the deliverables failed to meet the quality standards specified in section 3.1 of our agreement. UAE Civil Code Article 272 provides that a contract may be set aside if obligations aren't fulfilled.",
+              sender: "Rooz (Representing Afaq)",
+              role: 'defense'
+            };
+            
+            setMessages((prev) => [...prev, defenseResponse]);
+            setIsTyping(false);
+            
+            setTimeout(() => setActiveSpeaker(null), 1000);
+          }, 2000);
+        }, 2000);
+      }, 2000);
     }, 1500);
   };
   
@@ -164,6 +189,17 @@ const CourtSimulation = () => {
     // Scroll to bottom when messages change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+  
+  const getAvatarPosition = (role: string) => {
+    switch(role) {
+      case 'judge': return 'top-10 left-1/2 transform -translate-x-1/2';
+      case 'plaintiff': return 'bottom-10 left-1/4 transform -translate-x-1/2';
+      case 'defense': return 'bottom-10 right-1/4 transform translate-x-1/2';
+      case 'witness': return 'bottom-10 left-10';
+      case 'user': return 'bottom-10 right-10';
+      default: return '';
+    }
+  };
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -186,7 +222,7 @@ const CourtSimulation = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-gray-600 text-center mb-8 max-w-3xl mx-auto"
           >
-            Experience an immersive virtual courtroom environment to practice and learn about UAE legal proceedings
+            Experience an immersive virtual courtroom environment based on UAE legal proceedings
           </motion.p>
           
           <div className="flex flex-col lg:flex-row gap-6">
@@ -196,89 +232,65 @@ const CourtSimulation = () => {
               transition={{ duration: 0.5 }}
               className="lg:w-3/4 bg-white rounded-lg overflow-hidden shadow-lg"
             >
+              {/* Courtroom Scene */}
               <div className="relative">
-                {/* Court scene background */}
-                <div className="w-full h-[450px] bg-gradient-to-b from-[#e6e9f0] to-[#eef1f5] relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[url('/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png')] bg-cover bg-center opacity-10"></div>
+                <div className="w-full h-[450px] bg-gradient-to-b from-[#f5f3ee] to-[#e6e0d4] relative overflow-hidden">
+                  {/* Courtroom background with subtle wood texture */}
+                  <div className="absolute inset-0 bg-[url('/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png')] bg-cover bg-center opacity-5"></div>
                   
                   {/* Court bench */}
-                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-[#c1c161] bg-opacity-30 border-t-4 border-[#8a7b4c]"></div>
+                  <div className="absolute top-0 left-0 right-0 h-32 bg-[#8a7b4c] bg-opacity-20 border-b-4 border-[#8a7b4c]"></div>
+                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-[#8a7b4c] bg-opacity-10 border-t-2 border-[#8a7b4c]"></div>
                   
-                  {/* Participants */}
-                  <div className="absolute bottom-24 left-0 right-0 px-4 flex justify-between">
-                    {/* Judge */}
-                    <div className={`w-1/4 relative ${activeSpeaker === '1' ? 'scale-105' : ''} transition-transform duration-300`}>
-                      <motion.div 
-                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
-                        animate={activeSpeaker === '1' && messages[messages.length - 1]?.animation === 'gesture' 
-                          ? { y: [0, -5, 0], x: [0, 5, 0] } 
-                          : activeSpeaker === '1' && messages[messages.length - 1]?.animation === 'nod'
-                          ? { rotate: [0, 5, 0, -5, 0] }
+                  {/* Participants with their positions */}
+                  {participants.map((participant) => (
+                    <motion.div
+                      key={participant.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: Number(participant.id) * 0.1 }}
+                      className={`absolute ${getAvatarPosition(participant.role)}`}
+                    >
+                      <motion.div
+                        animate={activeSpeaker === participant.id 
+                          ? { y: [0, -5, 0], scale: [1, 1.05, 1] } 
                           : {}}
-                        transition={{ duration: 1, repeat: 1 }}
+                        transition={{ duration: 0.5, repeat: activeSpeaker === participant.id ? 1 : 0 }}
+                        className="flex flex-col items-center"
                       >
-                        <div className="flex flex-col items-center">
-                          <div className="text-xs font-bold mb-1 bg-[#D946EF] text-white px-2 py-0.5 rounded-full">
-                            Judge
-                          </div>
-                          <img src={participants[0].avatar} alt="Judge" className="h-28 object-contain" />
+                        <div className={`text-xs font-bold mb-1 px-2 py-0.5 rounded-full 
+                          ${participant.role === 'judge' ? 'bg-[#D946EF] text-white' : 
+                           participant.role === 'plaintiff' ? 'bg-[#3B82F6] text-white' : 
+                           participant.role === 'defense' ? 'bg-[#F97316] text-white' :
+                           participant.role === 'witness' ? 'bg-[#10B981] text-white' :
+                           'bg-gray-700 text-white'}
+                        `}>
+                          {participant.role.charAt(0).toUpperCase() + participant.role.slice(1)}
+                        </div>
+                        <div className="relative">
+                          <Avatar className={`h-16 w-16 ${activeSpeaker === participant.id ? 'ring-2 ring-[#D4AF37]' : ''}`}>
+                            <AvatarImage src={participant.avatar} alt={participant.name} />
+                            <AvatarFallback className={participant.color}>{participant.initials}</AvatarFallback>
+                          </Avatar>
+                          {activeSpeaker === participant.id && (
+                            <motion.div 
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="absolute -bottom-1 -right-1 h-3 w-3 bg-green-500 rounded-full"
+                            />
+                          )}
+                        </div>
+                        <div className="text-xs font-medium mt-1 text-center max-w-[80px] truncate">
+                          {participant.name}
                         </div>
                       </motion.div>
-                    </div>
-                    
-                    {/* Plaintiff */}
-                    <div className={`w-1/4 relative ${activeSpeaker === '2' ? 'scale-105' : ''} transition-transform duration-300`}>
-                      <motion.div 
-                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
-                        animate={activeSpeaker === '2' ? { y: [0, -3, 0] } : {}}
-                        transition={{ duration: 0.5, repeat: 2 }}
-                      >
-                        <div className="flex flex-col items-center">
-                          <div className="text-xs font-bold mb-1 bg-[#3B82F6] text-white px-2 py-0.5 rounded-full">
-                            Plaintiff
-                          </div>
-                          <img src={participants[1].avatar} alt="Plaintiff" className="h-24 object-contain" />
-                        </div>
-                      </motion.div>
-                    </div>
-                    
-                    {/* Defense */}
-                    <div className={`w-1/4 relative ${activeSpeaker === '3' ? 'scale-105' : ''} transition-transform duration-300`}>
-                      <motion.div 
-                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
-                        animate={activeSpeaker === '3' ? { x: [0, 3, 0, -3, 0] } : {}}
-                        transition={{ duration: 0.8, repeat: 2 }}
-                      >
-                        <div className="flex flex-col items-center">
-                          <div className="text-xs font-bold mb-1 bg-[#F97316] text-white px-2 py-0.5 rounded-full">
-                            Defense
-                          </div>
-                          <img src={participants[2].avatar} alt="Defense" className="h-24 object-contain" />
-                        </div>
-                      </motion.div>
-                    </div>
-                    
-                    {/* User/Observer */}
-                    <div className={`w-1/4 relative ${activeSpeaker === '4' ? 'scale-105' : ''} transition-transform duration-300`}>
-                      <motion.div 
-                        className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
-                        animate={activeSpeaker === '4' ? { y: [0, -2, 0], scale: [1, 1.05, 1] } : {}}
-                        transition={{ duration: 0.5, repeat: 2 }}
-                      >
-                        <div className="flex flex-col items-center">
-                          <div className="text-xs font-bold mb-1 bg-gray-700 text-white px-2 py-0.5 rounded-full">
-                            {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
-                          </div>
-                          <img src={participants[3].avatar} alt="User" className="h-20 object-contain" />
-                        </div>
-                      </motion.div>
-                    </div>
-                  </div>
+                    </motion.div>
+                  ))}
                   
-                  {/* Chat bubbles overlaid on the court image */}
+                  {/* Chat bubbles overlaid on the courtroom */}
                   <div className="absolute inset-0 p-4 overflow-y-auto">
-                    <div className="space-y-4 mb-32">
-                      {messages.map((msg, index) => (
+                    <div className="space-y-4 mb-32 pt-28">
+                      {messages.map((msg) => (
                         <AnimatePresence key={msg.id} mode="wait">
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
@@ -289,16 +301,20 @@ const CourtSimulation = () => {
                               msg.role === 'judge' 
                                 ? 'mx-auto' 
                                 : msg.role === 'plaintiff'
-                                  ? 'ml-0 mr-auto'
+                                  ? 'ml-20 mr-auto'
                                   : msg.role === 'defense'
-                                    ? 'ml-auto mr-0'
-                                    : 'ml-0 mr-auto'
+                                    ? 'ml-auto mr-20'
+                                    : msg.role === 'user'
+                                      ? 'ml-auto mr-4'
+                                      : 'ml-4 mr-auto'
                             }`}
                           >
-                            <ChatBubble 
-                              message={msg.content} 
-                              isUser={msg.role === 'user'} 
-                              isTyping={isTyping && index === messages.length - 1}
+                            <VirtualChatBubble 
+                              message={msg.content}
+                              sender={msg.sender}
+                              role={msg.role}
+                              isActive={activeSpeaker === participants.find(p => p.role === msg.role)?.id}
+                              isTyping={isTyping && msg.id === messages[messages.length - 1].id}
                             />
                           </motion.div>
                         </AnimatePresence>
@@ -311,13 +327,16 @@ const CourtSimulation = () => {
                 
                 {/* User input area */}
                 <div className="p-4 border-t border-gray-200">
-                  <div className="flex items-center gap-2">
-                    <div className="flex-grow">
-                      <textarea
-                        placeholder="Enter your statement or response..."
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-shoora-gold/50 min-h-[80px] resize-none"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-medium text-gray-700">
+                      Your Response to the current court proceeding...
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <Textarea
+                        value={userInput}
+                        onChange={(e) => setUserInput(e.target.value)}
+                        placeholder="Type your response as the selected role..."
+                        className="min-h-[80px] resize-none"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
@@ -326,13 +345,12 @@ const CourtSimulation = () => {
                         }}
                       />
                     </div>
-                    
-                    <button
+                    <Button 
                       onClick={handleUserMessage}
-                      className="bg-[#D4AF37] text-white p-3 rounded-lg hover:bg-[#D4AF37]/80 h-12 w-12 flex items-center justify-center"
+                      className="bg-[#D4AF37] hover:bg-[#B7973A] text-white ml-auto"
                     >
-                      <Send className="h-5 w-5" />
-                    </button>
+                      <Send className="h-4 w-4 mr-2" /> Submit Response
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -421,45 +439,17 @@ const CourtSimulation = () => {
                 </h3>
                 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold">
-                      J
+                  {participants.map((participant) => (
+                    <div key={participant.id} className="flex items-center gap-3">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${participant.color}`}>
+                        {participant.initials}
+                      </div>
+                      <div>
+                        <div className="font-medium">{participant.name}</div>
+                        <div className="text-xs text-gray-500 capitalize">{participant.role}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-medium">Hon. Mohammed Al Qasimi</div>
-                      <div className="text-xs text-gray-500">Judge</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">
-                      P
-                    </div>
-                    <div>
-                      <div className="font-medium">John Doe</div>
-                      <div className="text-xs text-gray-500">Plaintiff</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">
-                      D
-                    </div>
-                    <div>
-                      <div className="font-medium">ABC Corporation</div>
-                      <div className="text-xs text-gray-500">Defense</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold">
-                      Y
-                    </div>
-                    <div>
-                      <div className="font-medium">You</div>
-                      <div className="text-xs text-gray-500 capitalize">{userRole}</div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
               
