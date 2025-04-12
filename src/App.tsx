@@ -8,6 +8,7 @@ import Library from "./pages/Library";
 import LegalAssistant from "./pages/LegalAssistant";
 import CourtSimulation from "./pages/CourtSimulation";
 import Accessibility from "./pages/Accessibility";
+import SignUp from "./pages/SignUp";
 import Terms from "./pages/Terms";
 import Licensing from "./pages/Licensing";
 import NotFound from "./pages/NotFound";
@@ -25,6 +26,7 @@ const App = () => (
         <Route path="/assistant" element={<LegalAssistant />} />
         <Route path="/court-simulation" element={<CourtSimulation />} />
         <Route path="/accessibility" element={<Accessibility />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/licensing" element={<Licensing />} />
         <Route path="*" element={<NotFound />} />

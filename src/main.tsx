@@ -9,10 +9,14 @@ const rootElement = document.getElementById('root');
 if (!rootElement) {
   console.error('Root element not found');
 } else {
-  const root = createRoot(rootElement);
-  root.render(
-    <StrictMode>
-      <App />
-    </StrictMode>
-  );
+  try {
+    const root = createRoot(rootElement);
+    root.render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+  } catch (error) {
+    console.error('Error rendering application:', error);
+  }
 }

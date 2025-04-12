@@ -61,8 +61,10 @@ const Footer = () => {
         
         <div className="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-600">© {new Date().getFullYear()} Shoora. All rights reserved.</p>
-          <div className="flex items-center gap-2 mt-4 md:mt-0">
-            <span className="text-gray-600">Subscribe to our newsletter:</span>
+          <div className="flex items-center gap-4 mt-4 md:mt-0">
+            <Link to="/signup" className="bg-[#D4AF37] text-white px-4 py-2 rounded hover:bg-[#D4AF37]/90 transition-colors">
+              Sign up to read
+            </Link>
             <div className="relative">
               <input 
                 type="email" 

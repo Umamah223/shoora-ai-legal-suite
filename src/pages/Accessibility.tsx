@@ -47,7 +47,7 @@ const Accessibility = () => {
                 <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
                   <div className="relative">
                     <img 
-                      src="/public/lovable-uploads/0e369dd4-06c6-4c83-ab77-a7b01ad2cd21.png" 
+                      src="/public/lovable-uploads/7cbfb857-d2ef-4722-88e7-8f8c969ce522.png" 
                       alt="Accessibility Video" 
                       className="w-full aspect-video object-cover"
                     />
@@ -286,7 +286,7 @@ const Accessibility = () => {
                 
                 <div className="md:w-1/3">
                   <img 
-                    src="/public/lovable-uploads/0e369dd4-06c6-4c83-ab77-a7b01ad2cd21.png" 
+                    src="/public/lovable-uploads/7cbfb857-d2ef-4722-88e7-8f8c969ce522.png" 
                     alt="Accessibility Support" 
                     className="rounded-lg shadow-md"
                   />
