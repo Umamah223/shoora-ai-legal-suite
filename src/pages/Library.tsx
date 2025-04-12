@@ -25,42 +25,42 @@ const books = [
     title: 'UAE Labour Law 5th Edition', 
     author: 'Abdel Latif Jumah', 
     year: '2018', 
-    coverImage: '/public/lovable-uploads/e0abb381-7fea-4dce-8367-7902f0471b98.png' 
+    coverImage: '/public/lovable-uploads/image.png' 
   },
   { 
     id: 2, 
     title: 'Mastering UAE Labour Law', 
     author: 'Kavitha G. Raghwendra', 
     year: '2024', 
-    coverImage: '/public/lovable-uploads/6bb061aa-6a09-44aa-8885-02765a9c94b8.png' 
+    coverImage: '/public/lovable-uploads/image copy 2.png' 
   },
   { 
     id: 3, 
     title: 'Criminal Procedure Law', 
     author: 'Abdel Latif Jumah', 
     year: '2020', 
-    coverImage: '/public/lovable-uploads/2c5d81a7-fe04-4b42-828e-8b8d6eb27e5b.png' 
+    coverImage: '/public/lovable-uploads/image copy 6.png' 
   },
   { 
     id: 4, 
     title: 'Encyclopedia of American Civil Liberties', 
     author: 'Various Authors', 
     year: '2013', 
-    coverImage: '/public/lovable-uploads/024e5132-d431-40bb-8a1c-e7105a2cf5dd.png' 
+    coverImage: '/public/lovable-uploads/image copy 3.png' 
   },
   { 
     id: 5, 
     title: 'Construction Law', 
     author: 'Julian Bailey', 
     year: '2016', 
-    coverImage: '/public/lovable-uploads/3cc903e1-8885-418a-b840-1d8fcb3f8c96.png' 
+    coverImage: '/public/lovable-uploads/image copy 4.png' 
   },
   { 
     id: 6, 
     title: 'The Ethics of Public Health, Volumes 1-3', 
     author: 'Various Authors', 
     year: '2018', 
-    coverImage: '/public/lovable-uploads/deccab18-1319-41d1-aa79-9a95f23f821c.png' 
+    coverImage: '/public/lovable-uploads/image copy 5.png' 
   }
 ];
 
