@@ -9,14 +9,14 @@ import TopicCard from '@/components/TopicCard';
 
 // Sample data
 const legalTopics = [
-  { id: 1, title: 'Administrative Law', icon: '⚖️' },
-  { id: 2, title: 'Agricultural Law', icon: '🌾' },
-  { id: 3, title: 'Alternative Dispute Resolution', icon: '🤝' },
-  { id: 4, title: 'Antitrust', icon: '🏢' },
-  { id: 5, title: 'Banking Law', icon: '🏦' },
+  { id: 1, title: 'Administrative Law', icon: '/public/lovable-uploads/administrative law.png' },
+  { id: 2, title: 'Agricultural Law', icon: '/public/lovable-uploads/agricultural law.png' },
+  { id: 3, title: 'Alternative Dispute Resolution', icon: '/public/lovable-uploads/alternative dispute reolsution.png' },
+  { id: 4, title: 'Antitrust', icon: '/public/lovable-uploads/antitrust.png' },
+  { id: 5, title: 'Banking Law', icon: '/public/lovable-uploads/banking law.png' },
   { id: 6, title: 'Constitutional Law', icon: '📜' },
-  { id: 7, title: 'Contract Law', icon: '📝' },
-  { id: 8, title: 'Corporate Law', icon: '💼' }
+  { id: 7, title: 'Contract Law', icon: '/public/lovable-uploads/contract law.png' },
+  { id: 8, title: 'Corporate Law', icon: '/public/lovable-uploads/corporate law.jpg' }
 ];
 
 const books = [
