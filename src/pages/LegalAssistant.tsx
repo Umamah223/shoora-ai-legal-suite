@@ -1,32 +1,32 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { MessageSquare, FileText, Upload, Paperclip, Send, ChevronDown, Info, Check } from 'lucide-react';
+import { MessageSquare, FileText, Upload, Paperclip, Send, ChevronDown, Info, Check, Link, File } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ChatBubble from '@/components/ChatBubble';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Button } from '@/components/ui/button';
 
 const exampleQuestions = [
   {
     id: 1,
     question: "What is considered a criminal breach of trust under UAE law?",
-    answer: "According to Article 404 of the UAE Federal Penal Code, criminal breach of trust involves the misappropriation or disposal of movable property that was entrusted to a person under a contract such as deposit, lease, loan, or agency. It is punishable by imprisonment or fine."
+    answer: "According to Article 404 of the UAE Federal Penal Code, criminal breach of trust involves the misappropriation or disposal of movable property that was entrusted to a person under a contract such as deposit, lease, loan, or agency. It is punishable by imprisonment or fine.\n\nYou can find more information in the following resources:\n- [UAE Federal Penal Code](https://www.adjd.gov.ae/sites/Authoring/AR/ELibrary%20Books/E-Library/PDFs/Criminal%20Law.pdf)\n- [Guide to UAE Criminal Law](https://www.tamimi.com/law-update-articles/breach-of-trust-a-practical-insight/)"
   },
   {
     id: 2,
     question: "How can I file for labor complaint in the UAE if my employer hasn't paid my salary?",
-    answer: "You can file a complaint through the Ministry of Human Resources and Emiratisation (MOHRE) via the MOHRE app or by calling 80060. If not resolved within 14 days, the complaint is escalated to the UAE labor court automatically."
+    answer: "You can file a complaint through the Ministry of Human Resources and Emiratisation (MOHRE) via the MOHRE app or by calling 80060. If not resolved within 14 days, the complaint is escalated to the UAE labor court automatically.\n\nUseful resources:\n- [MOHRE Official Website](https://www.mohre.gov.ae/en/services/labour-relations/labour-complaints.aspx)\n- [UAE Labour Law Guide](https://u.ae/en/information-and-services/jobs/labour-law)"
   },
   {
     id: 3,
     question: "What is the procedure for filing a tenancy dispute in Dubai?",
-    answer: "All tenancy disputes in Dubai must be submitted to the Dubai Rental Dispute Settlement Centre (RDSC). File online or visit the RDSC office. Attach your Ejari, tenancy contract, Emirates ID, and evidence of the dispute. A fee (3.5% of the annual rent) is applicable."
+    answer: "All tenancy disputes in Dubai must be submitted to the Dubai Rental Dispute Settlement Centre (RDSC). File online or visit the RDSC office. Attach your Ejari, tenancy contract, Emirates ID, and evidence of the dispute. A fee (3.5% of the annual rent) is applicable.\n\nMore details available at:\n- [RDSC Official Portal](https://www.rdsc.gov.ae/)\n- [Dubai Land Department](https://dubailand.gov.ae/en/eservices/rental-disputes-center/)"
   },
   {
     id: 4,
     question: "Can foreigners own property in the UAE?",
-    answer: "Yes. Under Law No. 7 of 2006, non-GCC expatriates can own freehold properties in designated areas of Dubai, Abu Dhabi, and other emirates. Ownership rights include selling, leasing, or inheriting the property."
+    answer: "Yes. Under Law No. 7 of 2006, non-GCC expatriates can own freehold properties in designated areas of Dubai, Abu Dhabi, and other emirates. Ownership rights include selling, leasing, or inheriting the property.\n\nFor more information, consult:\n- [Dubai Land Department Guidelines](https://dubailand.gov.ae/en/open-data/real-estate-legislation/)\n- [UAE Property Ownership Guide](https://u.ae/en/information-and-services/housing/buying-and-owning-a-home-in-the-uae)"
   }
 ];
 
@@ -43,6 +43,8 @@ const LegalAssistant = () => {
   const [activeTab, setActiveTab] = useState<'ask' | 'draft' | 'summarize' | 'documents'>('ask');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [selectedMatchOptions, setSelectedMatchOptions] = useState<string[]>(["Match Law"]);
+  const [uploadedDocuments, setUploadedDocuments] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useIsMobile();
   
   const handleSendMessage = async () => {
@@ -60,13 +62,21 @@ const LegalAssistant = () => {
     
     // Simulate AI response delay
     setTimeout(() => {
-      const aiResponse = {
-        id: (Date.now() + 1).toString(),
-        content: "Under UAE Civil Procedure Law (Federal Law No. 11 of 1992), parties are typically required to submit a response within 15 days of being notified of the lawsuit, unless otherwise specified by the court. If your deadline is approaching, you should immediately file a request for extension or submit your defense documents electronically via the Dubai Courts e-services portal to avoid judgment in absentia. You can access the portal here: Dubai Courts eServices. Remember: Failure to respond within the specified timeline may result in the court issuing a default judgment.",
-        isUser: false
-      };
-      
-      setMessages((prev) => [...prev, aiResponse]);
+      if (activeTab === 'draft' && inputValue.toLowerCase().includes('rental agreement')) {
+        const aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: "To get started, could you please provide the following details:\n\n- Full name of the landlord\n- Full name of the tenant\n- Property address\n- Monthly rent amount\n- Duration of the lease (e.g., 12 months, 1 year)\n- Start and end dates of the lease\n- Security deposit amount (if any)\n- Any special terms or conditions (e.g., maintenance responsibilities, renewal clauses)\n\nOnce I have this information, I'll generate a customized rental agreement compliant with UAE laws.",
+          isUser: false
+        };
+        setMessages((prev) => [...prev, aiResponse]);
+      } else {
+        const aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: "Under UAE Civil Procedure Law (Federal Law No. 11 of 1992), parties are typically required to submit a response within 15 days of being notified of the lawsuit, unless otherwise specified by the court. If your deadline is approaching, you should immediately file a request for extension or submit your defense documents electronically via the Dubai Courts e-services portal to avoid judgment in absentia.\n\nYou can access the portal here: [Dubai Courts eServices](https://www.dc.gov.ae/PublicServices).\n\nRemember: Failure to respond within the specified timeline may result in the court issuing a default judgment.",
+          isUser: false
+        };
+        setMessages((prev) => [...prev, aiResponse]);
+      }
       setIsTyping(false);
     }, 1500);
   };
@@ -138,6 +148,36 @@ const LegalAssistant = () => {
         isUser: false
       }
     ]);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      setUploadedDocuments(prev => [...prev, ...newFiles]);
+      
+      // Add a message about the uploaded document
+      const fileNames = newFiles.map(file => file.name).join(", ");
+      const userMessage = {
+        id: Date.now().toString(),
+        content: `I've uploaded: ${fileNames}`,
+        isUser: true
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      setIsTyping(true);
+      
+      // Simulate AI response
+      setTimeout(() => {
+        const aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: `I've received your document${newFiles.length > 1 ? 's' : ''}: ${fileNames}. What would you like me to do with ${newFiles.length > 1 ? 'them' : 'it'}? I can summarize the content, extract key information, or answer specific questions about the document.`,
+          isUser: false
+        };
+        
+        setMessages(prev => [...prev, aiResponse]);
+        setIsTyping(false);
+      }, 1500);
+    }
   };
   
   return (
@@ -289,12 +329,54 @@ const LegalAssistant = () => {
                   ))}
                 </div>
                 
+                {activeTab === 'documents' && (
+                  <div className="mb-4">
+                    <div className="mb-3">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Documents:</p>
+                      {uploadedDocuments.length === 0 ? (
+                        <p className="text-sm text-gray-500">No documents uploaded yet.</p>
+                      ) : (
+                        <div className="space-y-2">
+                          {uploadedDocuments.map((doc, index) => (
+                            <div key={index} className="flex items-center p-2 bg-gray-50 rounded border">
+                              <File className="h-4 w-4 text-gray-500 mr-2" />
+                              <span className="text-sm">{doc.name}</span>
+                              <span className="ml-auto text-xs text-gray-500">{(doc.size / 1024).toFixed(1)} KB</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <Button 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white w-full flex items-center justify-center gap-2"
+                    >
+                      <Upload className="h-4 w-4" />
+                      Upload Document
+                    </Button>
+                    <input 
+                      type="file" 
+                      ref={fileInputRef} 
+                      className="hidden" 
+                      onChange={handleFileUpload} 
+                      multiple
+                    />
+                  </div>
+                )}
+                
                 <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37]">
                   <input
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Can foreigners own property in the UAE?"
+                    placeholder={activeTab === 'ask' 
+                      ? "Can foreigners own property in the UAE?" 
+                      : activeTab === 'draft'
+                      ? "I need to draft a rental agreement"
+                      : activeTab === 'summarize'
+                      ? "Ask a question about your uploaded document"
+                      : "Ask about your uploaded documents"
+                    }
                     className="flex-grow py-3 px-4 bg-transparent outline-none"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
@@ -302,9 +384,14 @@ const LegalAssistant = () => {
                       }
                     }}
                   />
-                  <button className="p-2 text-gray-500 hover:text-[#D4AF37]">
-                    <Paperclip className="w-5 h-5" />
-                  </button>
+                  {(activeTab === 'summarize' || activeTab === 'documents') && (
+                    <button 
+                      className="p-2 text-gray-500 hover:text-[#D4AF37]"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <Paperclip className="w-5 h-5" />
+                    </button>
+                  )}
                   <button 
                     onClick={handleSendMessage}
                     className="bg-[#D4AF37] text-white p-2 m-1 rounded-full hover:bg-[#D4AF37]/80"
@@ -320,7 +407,12 @@ const LegalAssistant = () => {
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <button className="hover:text-gray-700">Clear conversation</button>
+                    <button 
+                      className="hover:text-gray-700"
+                      onClick={() => setMessages([])}
+                    >
+                      Clear conversation
+                    </button>
                     <Info className="w-4 h-4" />
                   </div>
                 </div>

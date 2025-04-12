@@ -6,7 +6,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import VirtualChatBubble from '@/components/VirtualChatBubble';
 
@@ -190,17 +189,6 @@ const CourtSimulation = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   
-  const getAvatarPosition = (role: string) => {
-    switch(role) {
-      case 'judge': return 'top-10 left-1/2 transform -translate-x-1/2';
-      case 'plaintiff': return 'bottom-10 left-1/4 transform -translate-x-1/2';
-      case 'defense': return 'bottom-10 right-1/4 transform translate-x-1/2';
-      case 'witness': return 'bottom-10 left-10';
-      case 'user': return 'bottom-10 right-10';
-      default: return '';
-    }
-  };
-  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -234,58 +222,16 @@ const CourtSimulation = () => {
             >
               {/* Courtroom Scene */}
               <div className="relative">
-                <div className="w-full h-[450px] bg-gradient-to-b from-[#f5f3ee] to-[#e6e0d4] relative overflow-hidden">
-                  {/* Courtroom background with subtle wood texture */}
-                  <div className="absolute inset-0 bg-[url('/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png')] bg-cover bg-center opacity-5"></div>
+                <div className="w-full h-[450px] relative overflow-hidden">
+                  {/* Courtroom background with the new image */}
+                  <img 
+                    src="/public/lovable-uploads/a945de97-dcce-44e2-aca2-dd1c7bf05463.png" 
+                    alt="Courtroom" 
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
                   
-                  {/* Court bench */}
-                  <div className="absolute top-0 left-0 right-0 h-32 bg-[#8a7b4c] bg-opacity-20 border-b-4 border-[#8a7b4c]"></div>
-                  <div className="absolute bottom-0 left-0 right-0 h-24 bg-[#8a7b4c] bg-opacity-10 border-t-2 border-[#8a7b4c]"></div>
-                  
-                  {/* Participants with their positions */}
-                  {participants.map((participant) => (
-                    <motion.div
-                      key={participant.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: Number(participant.id) * 0.1 }}
-                      className={`absolute ${getAvatarPosition(participant.role)}`}
-                    >
-                      <motion.div
-                        animate={activeSpeaker === participant.id 
-                          ? { y: [0, -5, 0], scale: [1, 1.05, 1] } 
-                          : {}}
-                        transition={{ duration: 0.5, repeat: activeSpeaker === participant.id ? 1 : 0 }}
-                        className="flex flex-col items-center"
-                      >
-                        <div className={`text-xs font-bold mb-1 px-2 py-0.5 rounded-full 
-                          ${participant.role === 'judge' ? 'bg-[#D946EF] text-white' : 
-                           participant.role === 'plaintiff' ? 'bg-[#3B82F6] text-white' : 
-                           participant.role === 'defense' ? 'bg-[#F97316] text-white' :
-                           participant.role === 'witness' ? 'bg-[#10B981] text-white' :
-                           'bg-gray-700 text-white'}
-                        `}>
-                          {participant.role.charAt(0).toUpperCase() + participant.role.slice(1)}
-                        </div>
-                        <div className="relative">
-                          <Avatar className={`h-16 w-16 ${activeSpeaker === participant.id ? 'ring-2 ring-[#D4AF37]' : ''}`}>
-                            <AvatarImage src={participant.avatar} alt={participant.name} />
-                            <AvatarFallback className={participant.color}>{participant.initials}</AvatarFallback>
-                          </Avatar>
-                          {activeSpeaker === participant.id && (
-                            <motion.div 
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="absolute -bottom-1 -right-1 h-3 w-3 bg-green-500 rounded-full"
-                            />
-                          )}
-                        </div>
-                        <div className="text-xs font-medium mt-1 text-center max-w-[80px] truncate">
-                          {participant.name}
-                        </div>
-                      </motion.div>
-                    </motion.div>
-                  ))}
+                  {/* Overlay to make text more readable */}
+                  <div className="absolute inset-0 bg-black bg-opacity-20"></div>
                   
                   {/* Chat bubbles overlaid on the courtroom */}
                   <div className="absolute inset-0 p-4 overflow-y-auto">
@@ -478,29 +424,6 @@ const CourtSimulation = () => {
                   
                   <button className="w-full text-[#D4AF37] text-center pt-2 hover:underline">
                     View more legal references
-                  </button>
-                </div>
-              </div>
-              
-              {/* Help */}
-              <div className="bg-white p-5 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <HelpCircle className="w-5 h-5 text-[#D4AF37]" />
-                  Help & Resources
-                </h3>
-                
-                <div className="space-y-2">
-                  <button className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-md transition-colors">
-                    How to participate effectively
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-md transition-colors">
-                    Court etiquette and procedures
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-md transition-colors">
-                    Legal terminology reference
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 rounded-md transition-colors">
-                    View case precedents
                   </button>
                 </div>
               </div>

@@ -30,7 +30,7 @@ const Accessibility = () => {
             </motion.h1>
             
             <motion.p
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-lg text-center mb-12 max-w-3xl mx-auto"
@@ -45,12 +45,12 @@ const Accessibility = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="md:col-span-6"
+                className="md:col-span-7"
               >
                 <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
                   <div className="relative">
                     <img 
-                      src="/public/lovable-uploads/deccab18-1319-41d1-aa79-9a95f23f821c.png" 
+                      src="/public/lovable-uploads/46cd0a81-39fb-4a64-bcd0-54a08c1b08de.png" 
                       alt="Online Course Lecture" 
                       className="w-full aspect-video object-cover"
                     />
@@ -70,10 +70,10 @@ const Accessibility = () => {
                   
                   <div className="p-6">
                     <h2 className="text-xl font-semibold mb-3" style={{ fontSize: `${fontSize + 4}px` }}>
-                      Welcome to Shoora Accessibility
+                      View Our Legal Lecture Courses
                     </h2>
                     <p className="text-gray-700 mb-6" style={{ fontSize: `${fontSize}px` }}>
-                      Our AI-powered accessibility features make legal research accessible to everyone, regardless of their abilities or limitations.
+                      Explore our AI-powered legal lecture courses based on various UAE laws, enhanced with special accessibility controls to ensure an inclusive learning experience for everyone.
                     </p>
                     
                     <div className="flex items-center justify-between">
@@ -104,7 +104,7 @@ const Accessibility = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="md:col-span-3"
+                className="md:col-span-5"
               >
                 {signLanguage ? (
                   <motion.div
@@ -132,96 +132,96 @@ const Accessibility = () => {
                   </div>
                 )}
               </motion.div>
-              
-              {/* Accessibility Controls */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="md:col-span-3"
-              >
-                <div className={`rounded-lg overflow-hidden shadow-md h-full ${highContrast ? 'bg-gray-900' : 'bg-white'}`}>
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold mb-6" style={{ fontSize: `${fontSize + 4}px` }}>
-                      Accessibility Controls
-                    </h2>
+            </div>
+            
+            {/* Accessibility Controls moved below the video */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="mb-16"
+            >
+              <div className={`rounded-lg overflow-hidden shadow-md p-6 ${highContrast ? 'bg-gray-900' : 'bg-white'}`}>
+                <h2 className="text-xl font-semibold mb-6" style={{ fontSize: `${fontSize + 4}px` }}>
+                  Accessibility Controls
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="font-medium mb-2" style={{ fontSize: `${fontSize}px` }}>
+                      Font Size
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <button 
+                        onClick={() => setFontSize(Math.max(12, fontSize - 2))}
+                        className="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center text-gray-700"
+                      >
+                        -
+                      </button>
+                      <div className="flex-grow h-2 bg-gray-200 rounded-full relative">
+                        <div 
+                          className="absolute h-full bg-shoora-gold rounded-full" 
+                          style={{ width: `${((fontSize - 12) / 16) * 100}%` }}
+                        ></div>
+                      </div>
+                      <button 
+                        onClick={() => setFontSize(Math.min(28, fontSize + 2))}
+                        className="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center text-gray-700"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
+                        High Contrast Mode
+                      </p>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          className="sr-only peer" 
+                          checked={highContrast}
+                          onChange={() => setHighContrast(!highContrast)}
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-shoora-gold"></div>
+                      </label>
+                    </div>
                     
-                    <div className="space-y-6">
-                      <div>
-                        <p className="font-medium mb-2" style={{ fontSize: `${fontSize}px` }}>
-                          Font Size
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <button 
-                            onClick={() => setFontSize(Math.max(12, fontSize - 2))}
-                            className="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center text-gray-700"
-                          >
-                            -
-                          </button>
-                          <div className="flex-grow h-2 bg-gray-200 rounded-full relative">
-                            <div 
-                              className="absolute h-full bg-shoora-gold rounded-full" 
-                              style={{ width: `${((fontSize - 12) / 16) * 100}%` }}
-                            ></div>
-                          </div>
-                          <button 
-                            onClick={() => setFontSize(Math.min(28, fontSize + 2))}
-                            className="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center text-gray-700"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
-                          High Contrast Mode
-                        </p>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer" 
-                            checked={highContrast}
-                            onChange={() => setHighContrast(!highContrast)}
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-shoora-gold"></div>
-                        </label>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
-                          Audio Description
-                        </p>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer" 
-                            checked={audioDescription}
-                            onChange={() => setAudioDescription(!audioDescription)}
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-shoora-gold"></div>
-                        </label>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
-                          Sign Language
-                        </p>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer" 
-                            checked={signLanguage}
-                            onChange={() => setSignLanguage(!signLanguage)}
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-shoora-gold"></div>
-                        </label>
-                      </div>
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
+                        Audio Description
+                      </p>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          className="sr-only peer" 
+                          checked={audioDescription}
+                          onChange={() => setAudioDescription(!audioDescription)}
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-shoora-gold"></div>
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium" style={{ fontSize: `${fontSize}px` }}>
+                        Sign Language
+                      </p>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          className="sr-only peer" 
+                          checked={signLanguage}
+                          onChange={() => setSignLanguage(!signLanguage)}
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-shoora-gold"></div>
+                      </label>
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -298,7 +298,7 @@ const Accessibility = () => {
                 
                 <div className="md:w-1/3">
                   <img 
-                    src="/public/lovable-uploads/deccab18-1319-41d1-aa79-9a95f23f821c.png" 
+                    src="/public/lovable-uploads/46cd0a81-39fb-4a64-bcd0-54a08c1b08de.png" 
                     alt="Accessibility Support" 
                     className="rounded-lg shadow-md"
                   />
