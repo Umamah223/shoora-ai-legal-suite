@@ -50,7 +50,7 @@ const Accessibility = () => {
                 <div className="bg-gray-100 rounded-lg overflow-hidden shadow-md">
                   <div className="relative">
                     <img 
-                      src="/public/lovable-uploads/46cd0a81-39fb-4a64-bcd0-54a08c1b08de.png" 
+                      src="/lovable-uploads/46cd0a81-39fb-4a64-bcd0-54a08c1b08de.png" 
                       alt="Online Course Lecture" 
                       className="w-full aspect-video object-cover"
                     />
@@ -114,7 +114,7 @@ const Accessibility = () => {
                     className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col"
                   >
                     <img 
-                      src="/public/lovable-uploads/8f73e578-f981-4218-a76c-126c7e577582.png" 
+                      src="/lovable-uploads/8f73e578-f981-4218-a76c-126c7e577582.png" 
                       alt="Sign Language Interpreter" 
                       className="w-full flex-grow object-cover"
                     />
@@ -298,7 +298,7 @@ const Accessibility = () => {
                 
                 <div className="md:w-1/3">
                   <img 
-                    src="/public/lovable-uploads/46cd0a81-39fb-4a64-bcd0-54a08c1b08de.png" 
+                    src="/lovable-uploads/f35bfca5-ff3c-4ba9-9969-0b0abe643183.png" 
                     alt="Accessibility Support" 
                     className="rounded-lg shadow-md"
                   />

@@ -69,7 +69,7 @@ const CourtSimulation = () => {
       id: '1',
       name: 'Hon. Jamal Al-Mahdi',
       role: 'judge',
-      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      avatar: '/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
       initials: 'JM',
       color: 'bg-purple-100 text-purple-600'
     },
@@ -77,7 +77,7 @@ const CourtSimulation = () => {
       id: '2',
       name: 'Rafat',
       role: 'plaintiff',
-      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      avatar: '/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
       initials: 'RA',
       color: 'bg-blue-100 text-blue-600'
     },
@@ -85,7 +85,7 @@ const CourtSimulation = () => {
       id: '3',
       name: 'Rooz',
       role: 'defense',
-      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      avatar: '/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
       initials: 'RO',
       color: 'bg-orange-100 text-orange-600'
     },
@@ -93,7 +93,7 @@ const CourtSimulation = () => {
       id: '4',
       name: 'John Wilson',
       role: 'witness',
-      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      avatar: '/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
       initials: 'JW',
       color: 'bg-green-100 text-green-600'
     },
@@ -101,7 +101,7 @@ const CourtSimulation = () => {
       id: '5',
       name: 'You',
       role: 'user',
-      avatar: '/public/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
+      avatar: '/lovable-uploads/af3c0ae6-44e0-4ef8-92be-70cae312e9ee.png',
       initials: 'YO',
       color: 'bg-gray-100 text-gray-600'
     }
@@ -193,13 +193,13 @@ const CourtSimulation = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow bg-gray-100">
-        <div className="container mx-auto max-w-6xl py-8 px-4">
+      <main className="flex-grow bg-gray-100 py-8 px-4">
+        <div className="container mx-auto max-w-6xl">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold text-center mb-6"
+            className="text-3xl md:text-4xl font-bold text-center mb-4"
           >
             Virtual Court Simulation
           </motion.h1>
@@ -218,14 +218,14 @@ const CourtSimulation = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="lg:w-3/4 bg-white rounded-lg overflow-hidden shadow-lg"
+              className="lg:w-2/3 bg-white rounded-lg overflow-hidden shadow-lg"
             >
               {/* Courtroom Scene */}
               <div className="relative">
-                <div className="w-full h-[450px] relative overflow-hidden">
-                  {/* Courtroom background with the new image */}
+                <div className="w-full h-[400px] relative overflow-hidden">
+                  {/* Courtroom background */}
                   <img 
-                    src="/public/lovable-uploads/a945de97-dcce-44e2-aca2-dd1c7bf05463.png" 
+                    src="/lovable-uploads/a945de97-dcce-44e2-aca2-dd1c7bf05463.png" 
                     alt="Courtroom" 
                     className="absolute inset-0 w-full h-full object-cover"
                   />
@@ -235,7 +235,7 @@ const CourtSimulation = () => {
                   
                   {/* Chat bubbles overlaid on the courtroom */}
                   <div className="absolute inset-0 p-4 overflow-y-auto">
-                    <div className="space-y-4 mb-32 pt-28">
+                    <div className="space-y-4 mb-24 pt-8">
                       {messages.map((msg) => (
                         <AnimatePresence key={msg.id} mode="wait">
                           <motion.div
@@ -277,12 +277,12 @@ const CourtSimulation = () => {
                     <label className="text-sm font-medium text-gray-700">
                       Your Response to the current court proceeding...
                     </label>
-                    <div className="flex items-center gap-2">
+                    <div className="flex gap-2">
                       <Textarea
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
                         placeholder="Type your response as the selected role..."
-                        className="min-h-[80px] resize-none"
+                        className="min-h-[70px] resize-none"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
@@ -290,13 +290,13 @@ const CourtSimulation = () => {
                           }
                         }}
                       />
+                      <Button 
+                        onClick={handleUserMessage}
+                        className="bg-[#D4AF37] hover:bg-[#B7973A] text-white self-end"
+                      >
+                        <Send className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Button 
-                      onClick={handleUserMessage}
-                      className="bg-[#D4AF37] hover:bg-[#B7973A] text-white ml-auto"
-                    >
-                      <Send className="h-4 w-4 mr-2" /> Submit Response
-                    </Button>
                   </div>
                 </div>
               </div>
@@ -314,22 +314,22 @@ const CourtSimulation = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className={`lg:w-1/4 space-y-6 ${isMobileControlsOpen ? 'block' : 'hidden lg:block'}`}
+              className={`lg:w-1/3 space-y-5 ${isMobileControlsOpen ? 'block' : 'hidden lg:block'}`}
             >
               {/* Simulation controls */}
               <div className="bg-white p-5 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
                   <Settings className="w-5 h-5 text-[#D4AF37]" />
                   Simulation Settings
                 </h3>
                 
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Case Type
                     </label>
                     <select 
-                      className="w-full border border-gray-300 rounded-md p-2"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                       value={caseType}
                       onChange={(e) => setCaseType(e.target.value)}
                     >
@@ -344,7 +344,7 @@ const CourtSimulation = () => {
                       Difficulty Level
                     </label>
                     <select 
-                      className="w-full border border-gray-300 rounded-md p-2"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                       value={difficultyLevel}
                       onChange={(e) => setDifficultyLevel(e.target.value)}
                     >
@@ -359,7 +359,7 @@ const CourtSimulation = () => {
                       Your Role
                     </label>
                     <select 
-                      className="w-full border border-gray-300 rounded-md p-2"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
                       value={userRole}
                       onChange={(e) => setUserRole(e.target.value)}
                     >
@@ -379,14 +379,14 @@ const CourtSimulation = () => {
               
               {/* Participants */}
               <div className="bg-white p-5 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
                   <Users className="w-5 h-5 text-[#D4AF37]" />
                   Participants
                 </h3>
                 
                 <div className="space-y-3">
                   {participants.map((participant) => (
-                    <div key={participant.id} className="flex items-center gap-3">
+                    <div key={participant.id} className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-50 transition-colors">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${participant.color}`}>
                         {participant.initials}
                       </div>
@@ -401,28 +401,28 @@ const CourtSimulation = () => {
               
               {/* Legal References */}
               <div className="bg-white p-5 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
                   <FileText className="w-5 h-5 text-[#D4AF37]" />
                   UAE Legal References
                 </h3>
                 
                 <div className="space-y-2 text-sm">
-                  <div className="p-2 bg-gray-50 rounded-md">
+                  <div className="p-2.5 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
                     <p className="font-semibold">UAE Civil Code Article 246</p>
                     <p className="text-gray-600">Contract must be performed according to its contents and in a manner consistent with requirements of good faith.</p>
                   </div>
                   
-                  <div className="p-2 bg-gray-50 rounded-md">
+                  <div className="p-2.5 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
                     <p className="font-semibold">UAE Civil Code Article 272</p>
                     <p className="text-gray-600">If either party fails to perform, the contract may be rescinded or enforced with compensation.</p>
                   </div>
                   
-                  <div className="p-2 bg-gray-50 rounded-md">
+                  <div className="p-2.5 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
                     <p className="font-semibold">UAE Commercial Code Article 102</p>
                     <p className="text-gray-600">Disputes regarding commercial contracts must be decided in accordance with contractual terms.</p>
                   </div>
                   
-                  <button className="w-full text-[#D4AF37] text-center pt-2 hover:underline">
+                  <button className="w-full text-[#D4AF37] text-center pt-2 hover:underline font-medium">
                     View more legal references
                   </button>
                 </div>
@@ -431,11 +431,11 @@ const CourtSimulation = () => {
           </div>
           
           <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">About This Simulation</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">About This Simulation</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
+                <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-gray-700">
                   <Info className="w-5 h-5 text-[#D4AF37]" />
                   Learning Objectives
                 </h3>
@@ -448,7 +448,7 @@ const CourtSimulation = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-medium mb-2 flex items-center gap-2">
+                <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-gray-700">
                   <Award className="w-5 h-5 text-[#D4AF37]" />
                   Case Details
                 </h3>

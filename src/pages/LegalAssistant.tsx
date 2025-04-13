@@ -62,21 +62,41 @@ const LegalAssistant = () => {
     
     // Simulate AI response delay
     setTimeout(() => {
+      let aiResponse;
+      
       if (activeTab === 'draft' && inputValue.toLowerCase().includes('rental agreement')) {
-        const aiResponse = {
+        aiResponse = {
           id: (Date.now() + 1).toString(),
           content: "To get started, could you please provide the following details:\n\n- Full name of the landlord\n- Full name of the tenant\n- Property address\n- Monthly rent amount\n- Duration of the lease (e.g., 12 months, 1 year)\n- Start and end dates of the lease\n- Security deposit amount (if any)\n- Any special terms or conditions (e.g., maintenance responsibilities, renewal clauses)\n\nOnce I have this information, I'll generate a customized rental agreement compliant with UAE laws.",
           isUser: false
         };
-        setMessages((prev) => [...prev, aiResponse]);
+      } else if (inputValue.toLowerCase().includes('termination') || inputValue.toLowerCase().includes('fire')) {
+        aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: "According to UAE Federal Decree-Law No. 33 of 2021 (the UAE Labour Law), an employer may terminate an employee's service with notice if the employee has completed their probation period, provided they have a legitimate reason for termination. The notice period ranges from 30 to 90 days depending on the period of service.\n\nFor termination without notice, the law allows this in specific cases listed in Article 44, including if the employee:\n- Misuses their position for personal gain\n- Commits an error causing substantial material loss\n- Violates safety instructions after written warning\n\nSource: [UAE Ministry of Human Resources & Emiratisation](https://www.mohre.gov.ae/en/laws-and-regulations/laws.aspx)",
+          isUser: false
+        };
+      } else if (inputValue.toLowerCase().includes('alimony') || inputValue.toLowerCase().includes('custody')) {
+        aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: "In the UAE, alimony and child custody are governed by Personal Status Law (Federal Law No. 28 of 2005). For Muslims, Sharia principles apply, while non-Muslims can choose to apply their home country's law.\n\nFor custody:\n- Mothers generally have custody of young children (boys until age 11, girls until age 13)\n- Courts prioritize the child's best interests\n- Both parents retain guardianship rights even if one has physical custody\n\nFor alimony (nafaqah):\n- The father is obligated to financially support his children even after divorce\n- The amount depends on the father's financial capacity and the children's needs\n- Alimony for ex-wives is typically for a limited period (iddah) of 3-4 months\n\nSources:\n- [UAE Personal Status Law](https://u.ae/en/information-and-services/social-affairs/marriage-and-divorce)\n- [Dubai Courts Family Guidance Section](https://www.dc.gov.ae/PublicServices/FamilyGuidance)",
+          isUser: false
+        };
+      } else if (activeTab === 'documents' && uploadedDocuments.length > 0) {
+        aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: `I've analyzed your document and can answer questions about its contents. The document appears to contain legal information related to ${uploadedDocuments[0].name.includes("labor") ? "UAE labor regulations" : "contractual obligations"}. Please ask specific questions about any sections you'd like me to explain in more detail.`,
+          isUser: false
+        };
       } else {
-        const aiResponse = {
+        aiResponse = {
           id: (Date.now() + 1).toString(),
           content: "Under UAE Civil Procedure Law (Federal Law No. 11 of 1992), parties are typically required to submit a response within 15 days of being notified of the lawsuit, unless otherwise specified by the court. If your deadline is approaching, you should immediately file a request for extension or submit your defense documents electronically via the Dubai Courts e-services portal to avoid judgment in absentia.\n\nYou can access the portal here: [Dubai Courts eServices](https://www.dc.gov.ae/PublicServices).\n\nRemember: Failure to respond within the specified timeline may result in the court issuing a default judgment.",
           isUser: false
         };
-        setMessages((prev) => [...prev, aiResponse]);
       }
+      
+      setMessages((prev) => [...prev, aiResponse]);
       setIsTyping(false);
     }, 1500);
   };
@@ -364,7 +384,7 @@ const LegalAssistant = () => {
                   </div>
                 )}
                 
-                <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37]">
+                <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]/30">
                   <input
                     type="text"
                     value={inputValue}
@@ -408,7 +428,7 @@ const LegalAssistant = () => {
                   
                   <div className="flex items-center gap-2">
                     <button 
-                      className="hover:text-gray-700"
+                      className="hover:text-gray-700 transition-colors"
                       onClick={() => setMessages([])}
                     >
                       Clear conversation
