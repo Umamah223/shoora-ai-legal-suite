@@ -1,13 +1,20 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ArrowRight, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BookCard from '@/components/BookCard';
 import TopicCard from '@/components/TopicCard';
 import { Input } from '@/components/ui/input';
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 
 // Sample data
 const legalTopics = [
@@ -78,16 +85,10 @@ const subtopics = [
 const Library = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('explore');
-  const [selectedJurisdiction, setSelectedJurisdiction] = useState('Jurisdiction');
-  const [selectedMonth, setSelectedMonth] = useState('December');
-  const [selectedYear, setSelectedYear] = useState('2022');
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
-  
-  // Jurisdiction dropdown
-  const [showJurisdictionDropdown, setShowJurisdictionDropdown] = useState(false);
-  const [showMonthDropdown, setShowMonthDropdown] = useState(false);
-  const [showYearDropdown, setShowYearDropdown] = useState(false);
-  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -193,7 +194,13 @@ const Library = () => {
                     {legalTopics.map((topic, index) => (
                       <TopicCard 
                         key={topic.id}
-                        icon={<span className="text-2xl">{topic.icon}</span>}
+                        icon={
+                          typeof topic.icon === 'string' && topic.icon.startsWith('/lovable-uploads/') ? (
+                            <img src={topic.icon} alt={topic.title} className="w-6 h-6 object-contain" />
+                          ) : (
+                            <span className="text-2xl">{topic.icon}</span>
+                          )
+                        }
                         title={topic.title}
                         index={index}
                       />
@@ -203,123 +210,65 @@ const Library = () => {
               </div>
               
               <div className="mb-12">
-                <h2 className="text-xl font-semibold mb-4">Find by Jurisdiction, Date and language</h2>
+                <h2 className="text-xl font-semibold mb-6">Find by Jurisdiction, Date and language</h2>
                 
-                <div className="flex flex-wrap items-center justify-end gap-4 mb-6">
-                  <img 
-                    src="/lovable-uploads/5c9969f1-298b-49e9-a8ca-641b262bd4c6.png" 
-                    alt="Filter options" 
-                    className="w-full md:w-auto h-auto"
-                  />
+                <div className="flex flex-wrap gap-4 mb-6">
+                  <div className="w-full md:w-[180px]">
+                    <Select value={selectedJurisdiction} onValueChange={setSelectedJurisdiction}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Jurisdiction" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="uae">UAE</SelectItem>
+                        <SelectItem value="saudi">Saudi Arabia</SelectItem>
+                        <SelectItem value="qatar">Qatar</SelectItem>
+                        <SelectItem value="kuwait">Kuwait</SelectItem>
+                        <SelectItem value="usa">USA</SelectItem>
+                        <SelectItem value="uk">UK</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   
-                  <div className="hidden">
-                    <div className="relative">
-                      <button
-                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[180px]"
-                        onClick={() => setShowJurisdictionDropdown(!showJurisdictionDropdown)}
-                      >
-                        <span>{selectedJurisdiction}</span>
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      
-                      {showJurisdictionDropdown && (
-                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                          {['UAE', 'Saudi Arabia', 'Qatar', 'Kuwait', 'USA', 'UK'].map((item) => (
-                            <div
-                              key={item}
-                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                setSelectedJurisdiction(item);
-                                setShowJurisdictionDropdown(false);
-                              }}
-                            >
-                              {item}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="relative">
-                      <button
-                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[180px]"
-                        onClick={() => setShowMonthDropdown(!showMonthDropdown)}
-                      >
-                        <span>{selectedMonth}</span>
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      
-                      {showMonthDropdown && (
-                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                          {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((item) => (
-                            <div
-                              key={item}
-                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                setSelectedMonth(item);
-                                setShowMonthDropdown(false);
-                              }}
-                            >
-                              {item}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="relative">
-                      <button
-                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[120px]"
-                        onClick={() => setShowYearDropdown(!showYearDropdown)}
-                      >
-                        <span>{selectedYear}</span>
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      
-                      {showYearDropdown && (
-                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                          {Array.from({ length: 30 }, (_, i) => 2024 - i).map((year) => (
-                            <div
-                              key={year}
-                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                setSelectedYear(year.toString());
-                                setShowYearDropdown(false);
-                              }}
-                            >
-                              {year}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="relative">
-                      <button
-                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[150px]"
-                        onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-                      >
-                        <span>{selectedLanguage}</span>
-                        <ChevronDown className="h-4 w-4" />
-                      </button>
-                      
-                      {showLanguageDropdown && (
-                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                          {['English', 'Arabic', 'Spanish', 'French', 'German'].map((item) => (
-                            <div
-                              key={item}
-                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => {
-                                setSelectedLanguage(item);
-                                setShowLanguageDropdown(false);
-                              }}
-                            >
-                              {item}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                  <div className="w-full md:w-[180px]">
+                    <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Month" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {['January', 'February', 'March', 'April', 'May', 'June', 
+                          'July', 'August', 'September', 'October', 'November', 'December'].map(month => (
+                          <SelectItem key={month} value={month.toLowerCase()}>{month}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="w-full md:w-[120px]">
+                    <Select value={selectedYear} onValueChange={setSelectedYear}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Year" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.from({ length: 30 }, (_, i) => 2024 - i).map(year => (
+                          <SelectItem key={year} value={year.toString()}>{year}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="w-full md:w-[150px]">
+                    <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="english">English</SelectItem>
+                        <SelectItem value="arabic">Arabic</SelectItem>
+                        <SelectItem value="spanish">Spanish</SelectItem>
+                        <SelectItem value="french">French</SelectItem>
+                        <SelectItem value="german">German</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </div>
@@ -435,20 +384,5 @@ const Library = () => {
     </div>
   );
 };
-
-const ChevronDown = ({ className }: { className?: string }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 20 20" 
-    fill="currentColor" 
-    className={className}
-  >
-    <path 
-      fillRule="evenodd" 
-      d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" 
-      clipRule="evenodd" 
-    />
-  </svg>
-);
 
 export default Library;
