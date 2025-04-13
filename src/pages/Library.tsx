@@ -9,14 +9,14 @@ import TopicCard from '@/components/TopicCard';
 
 // Sample data
 const legalTopics = [
-  { id: 1, title: 'Administrative Law', icon: '/public/lovable-uploads/administrative law.png' },
-  { id: 2, title: 'Agricultural Law', icon: '/public/lovable-uploads/agricultural law.png' },
-  { id: 3, title: 'Alternative Dispute Resolution', icon: '/public/lovable-uploads/alternative dispute reolsution.png' },
-  { id: 4, title: 'Antitrust', icon: '/public/lovable-uploads/antitrust.png' },
-  { id: 5, title: 'Banking Law', icon: '/public/lovable-uploads/banking law.png' },
+  { id: 1, title: 'Administrative Law', icon: '/lovable-uploads/administrative law.png' },
+  { id: 2, title: 'Agricultural Law', icon: '/lovable-uploads/agricultural law.png' },
+  { id: 3, title: 'Alternative Dispute Resolution', icon: '/lovable-uploads/alternative dispute reolsution.png' },
+  { id: 4, title: 'Antitrust', icon: '/lovable-uploads/antitrust.png' },
+  { id: 5, title: 'Banking Law', icon: '/lovable-uploads/banking law.png' },
   { id: 6, title: 'Constitutional Law', icon: '📜' },
-  { id: 7, title: 'Contract Law', icon: '/public/lovable-uploads/contract law.png' },
-  { id: 8, title: 'Corporate Law', icon: '/public/lovable-uploads/corporate law.jpg' }
+  { id: 7, title: 'Contract Law', icon: '/lovable-uploads/contract law.png' },
+  { id: 8, title: 'Corporate Law', icon: '/lovable-uploads/corporate law.jpg' }
 ];
 
 const books = [
