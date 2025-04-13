@@ -1,8 +1,7 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Book, Search, Scale, Accessibility } from 'lucide-react';
+import { Book, Search, Scale, Accessibility, UserCheck, Users } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FeatureCard from '@/components/FeatureCard';
@@ -147,11 +146,11 @@ const Index = () => {
                 className="bg-white p-8 rounded-lg shadow-md"
               >
                 <div className="bg-shoora-gold/10 w-14 h-14 rounded-full flex items-center justify-center mb-6">
-                  <Search className="text-shoora-gold h-7 w-7" />
+                  <Scale className="text-shoora-gold h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">Intelligent Search</h3>
+                <h3 className="text-xl font-semibold mb-3">Interactive Court Simulation</h3>
                 <p className="text-gray-600">
-                  Our AI-powered search understands legal terminology and context, delivering more relevant results than traditional search engines.
+                  Practice your legal skills with our virtual court simulation and get real-time feedback to improve your arguments and understanding.
                 </p>
               </motion.div>
               
@@ -163,11 +162,45 @@ const Index = () => {
                 className="bg-white p-8 rounded-lg shadow-md"
               >
                 <div className="bg-shoora-gold/10 w-14 h-14 rounded-full flex items-center justify-center mb-6">
-                  <Scale className="text-shoora-gold h-7 w-7" />
+                  <Accessibility className="text-shoora-gold h-7 w-7" />
                 </div>
-                <h3 className="text-xl font-semibold mb-3">Interactive Learning</h3>
+                <h3 className="text-xl font-semibold mb-3">AI-Powered Accessibility</h3>
                 <p className="text-gray-600">
-                  Practice your legal skills with our court simulation and get real-time feedback to improve your arguments and understanding.
+                  Inclusive legal resources with AI-powered tools that make content accessible for everyone, regardless of their abilities.
+                </p>
+              </motion.div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                viewport={{ once: true }}
+                className="bg-white p-8 rounded-lg shadow-md"
+              >
+                <div className="bg-shoora-gold/10 w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                  <UserCheck className="text-shoora-gold h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Personalized Recommendations</h3>
+                <p className="text-gray-600">
+                  Get tailored legal resource suggestions based on your interests, research history, and professional needs.
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                viewport={{ once: true }}
+                className="bg-white p-8 rounded-lg shadow-md"
+              >
+                <div className="bg-shoora-gold/10 w-14 h-14 rounded-full flex items-center justify-center mb-6">
+                  <Search className="text-shoora-gold h-7 w-7" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Intelligent Search</h3>
+                <p className="text-gray-600">
+                  Our AI-powered search understands legal terminology and context, delivering more relevant results than traditional search engines.
                 </p>
               </motion.div>
             </div>

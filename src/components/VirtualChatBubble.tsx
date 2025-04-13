@@ -34,7 +34,7 @@ const VirtualChatBubble = ({
           clearInterval(interval);
           setIsComplete(true);
         }
-      }, 20); // Adjust typing speed
+      }, 30); // Adjust typing speed
       
       return () => clearInterval(interval);
     } else {
@@ -62,11 +62,11 @@ const VirtualChatBubble = ({
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.2 }}
       className={`rounded-lg p-4 border shadow-sm ${getBubbleStyle()} ${
-        isActive ? 'ring-2 ring-[#D4AF37]' : ''
+        isActive ? 'ring-2 ring-[#cc9c24]' : ''
       }`}
     >
       {sender && (
@@ -78,7 +78,7 @@ const VirtualChatBubble = ({
         {isTyping && !isComplete ? (
           <>
             {displayedText}
-            <span className="inline-block w-2 h-4 bg-[#D4AF37] ml-1 animate-pulse rounded-full"></span>
+            <span className="inline-block w-2 h-4 bg-[#cc9c24] ml-1 animate-pulse rounded-full"></span>
           </>
         ) : (
           displayedText

@@ -8,7 +8,7 @@ const Navbar = () => {
   const isMobile = useIsMobile();
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#D4AF37] w-full py-2.5 px-4 md:px-8">
+    <nav className="sticky top-0 z-50 bg-[#cc9c24] w-full py-2.5 px-4 md:px-8">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 md:gap-8">
           <Link to="/" className="font-bold text-2xl text-white">Shoora</Link>

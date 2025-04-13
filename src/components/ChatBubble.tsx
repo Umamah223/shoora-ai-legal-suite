@@ -1,6 +1,6 @@
 
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
 
 interface ChatBubbleProps {
   message: string;
@@ -8,57 +8,42 @@ interface ChatBubbleProps {
   isTyping?: boolean;
 }
 
-const ChatBubble = ({ message, isUser, isTyping = false }: ChatBubbleProps) => {
+const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isUser, isTyping = false }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    if (isTyping && !isUser) {
-      let index = 0;
+    if (isTyping) {
       setDisplayedText('');
       setIsComplete(false);
-      
-      const interval = setInterval(() => {
-        if (index < message.length) {
-          setDisplayedText((prev) => prev + message.charAt(index));
-          index++;
-        } else {
-          clearInterval(interval);
-          setIsComplete(true);
-        }
-      }, 15); // Adjust typing speed
-      
-      return () => clearInterval(interval);
     } else {
       setDisplayedText(message);
       setIsComplete(true);
     }
-  }, [message, isTyping, isUser]);
+  }, [message, isTyping]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className={`rounded-lg p-4 max-w-[90%] md:max-w-[80%] lg:max-w-[70%] ${
-        isUser 
-          ? 'ml-auto bg-[#F8F9FA] border border-gray-200 text-gray-800' 
-          : 'mr-auto bg-white border border-gray-200 shadow-sm text-gray-700'
-      }`}
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.2 }}
+      className={`chat-bubble ${isUser ? 'chat-bubble-user' : 'chat-bubble-assistant'}`}
     >
-      {isUser ? (
-        <div className="font-medium">{message}</div>
-      ) : (
-        <div className="prose prose-sm max-w-none">
-          {isTyping && !isComplete ? (
-            <>
-              {displayedText}
-              <span className="inline-block w-2 h-4 bg-[#D4AF37] ml-1 animate-pulse rounded-full"></span>
-            </>
-          ) : (
-            displayedText
-          )}
+      {isTyping ? (
+        <div className="flex space-x-2 items-center">
+          <span className="text-gray-600">Thinking</span>
+          <div className="flex space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              ></div>
+            ))}
+          </div>
         </div>
+      ) : (
+        <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{__html: message.replace(/\n/g, '<br/>').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-[#cc9c24] hover:underline">$1</a>')}} />
       )}
     </motion.div>
   );

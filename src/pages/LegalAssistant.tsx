@@ -82,10 +82,16 @@ const LegalAssistant = () => {
           content: "In the UAE, alimony and child custody are governed by Personal Status Law (Federal Law No. 28 of 2005). For Muslims, Sharia principles apply, while non-Muslims can choose to apply their home country's law.\n\nFor custody:\n- Mothers generally have custody of young children (boys until age 11, girls until age 13)\n- Courts prioritize the child's best interests\n- Both parents retain guardianship rights even if one has physical custody\n\nFor alimony (nafaqah):\n- The father is obligated to financially support his children even after divorce\n- The amount depends on the father's financial capacity and the children's needs\n- Alimony for ex-wives is typically for a limited period (iddah) of 3-4 months\n\nSources:\n- [UAE Personal Status Law](https://u.ae/en/information-and-services/social-affairs/marriage-and-divorce)\n- [Dubai Courts Family Guidance Section](https://www.dc.gov.ae/PublicServices/FamilyGuidance)",
           isUser: false
         };
+      } else if (activeTab === 'summarize' && uploadedDocuments.length > 0) {
+        aiResponse = {
+          id: (Date.now() + 1).toString(),
+          content: `I've analyzed the document "${uploadedDocuments[0].name}" and here's a summary of its key points:\n\n1. The document appears to be a ${uploadedDocuments[0].name.includes("contract") ? "contract agreement" : "legal document"} related to UAE legal framework.\n\n2. Key provisions include obligations of parties, dispute resolution mechanisms, and applicable law clauses.\n\n3. The document references several UAE legal codes including Federal Law No. 5 of 1985 (Civil Code) and Commercial Transactions Law.\n\n4. Important deadlines and notice periods are specified for contractual compliance.\n\n5. Termination clauses outline specific conditions under which the agreement can be ended.\n\nPlease ask if you need more detailed information about any specific section of the document.`,
+          isUser: false
+        };
       } else if (activeTab === 'documents' && uploadedDocuments.length > 0) {
         aiResponse = {
           id: (Date.now() + 1).toString(),
-          content: `I've analyzed your document and can answer questions about its contents. The document appears to contain legal information related to ${uploadedDocuments[0].name.includes("labor") ? "UAE labor regulations" : "contractual obligations"}. Please ask specific questions about any sections you'd like me to explain in more detail.`,
+          content: `I've analyzed your document "${uploadedDocuments[0].name}" and can answer questions about its contents. The document appears to contain legal information related to ${uploadedDocuments[0].name.includes("labor") ? "UAE labor regulations" : "contractual obligations"}. Please ask specific questions about any sections you'd like me to explain in more detail.`,
           isUser: false
         };
       } else {
@@ -98,7 +104,7 @@ const LegalAssistant = () => {
       
       setMessages((prev) => [...prev, aiResponse]);
       setIsTyping(false);
-    }, 1500);
+    }, 2000);
   };
   
   const handleExampleQuestion = (question: string, answer: string) => {
@@ -108,7 +114,7 @@ const LegalAssistant = () => {
       isUser: true
     };
     
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages([userMessage]);
     setIsTyping(true);
     
     // Simulate AI response delay
@@ -121,7 +127,7 @@ const LegalAssistant = () => {
       
       setMessages((prev) => [...prev, aiResponse]);
       setIsTyping(false);
-    }, 1500);
+    }, 2000);
   };
   
   const toggleMatchOption = (option: string) => {
@@ -196,7 +202,7 @@ const LegalAssistant = () => {
         
         setMessages(prev => [...prev, aiResponse]);
         setIsTyping(false);
-      }, 1500);
+      }, 2000);
     }
   };
   
@@ -208,16 +214,16 @@ const LegalAssistant = () => {
         <div className="w-full h-full flex">
           {/* Left sidebar */}
           <div className="w-16 md:w-20 bg-gray-100 border-r flex flex-col items-center py-5 hidden md:flex">
-            <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center mb-8">
+            <div className="w-10 h-10 rounded-full bg-[#cc9c24]/20 flex items-center justify-center mb-8">
               <span className="font-bold text-[#987B30]">P</span>
             </div>
             
             <div className="space-y-8 mt-4">
-              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#D4AF37] transition-colors">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#cc9c24] transition-colors">
                 <MessageSquare className="w-5 h-5" />
                 <span className="text-xs mt-1">Chat</span>
               </div>
-              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#D4AF37] transition-colors">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#cc9c24] transition-colors">
                 <FileText className="w-5 h-5" />
                 <span className="text-xs mt-1">Docs</span>
               </div>
@@ -236,7 +242,7 @@ const LegalAssistant = () => {
                   onClick={() => setActiveTab('ask')}
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'ask' 
-                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
@@ -248,7 +254,7 @@ const LegalAssistant = () => {
                   onClick={handleDraft}
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'draft' 
-                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
@@ -260,7 +266,7 @@ const LegalAssistant = () => {
                   onClick={handleSummarize}
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'summarize' 
-                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
@@ -272,7 +278,7 @@ const LegalAssistant = () => {
                   onClick={handleDocuments}
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'documents' 
-                      ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
+                      ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
                       : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                   }`}
                 >
@@ -284,15 +290,15 @@ const LegalAssistant = () => {
           
             {/* Chat area */}
             {messages.length === 0 ? (
-              <div className="flex-grow p-4 md:p-5 overflow-y-auto">
-                <div className="mt-2">
+              <div className="flex-grow p-4 md:p-5 overflow-y-auto bg-gray-50">
+                <div className="mt-2 max-w-4xl mx-auto">
                   <p className="font-medium text-gray-700 mb-3">Examples of legal questions to ask:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {exampleQuestions.map((q) => (
                       <div
                         key={q.id}
                         onClick={() => handleExampleQuestion(q.question, q.answer)}
-                        className="p-3 bg-gray-50 rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+                        className="p-3 bg-white rounded border border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
                       >
                         {q.question}
                       </div>
@@ -300,7 +306,7 @@ const LegalAssistant = () => {
                   </div>
                 </div>
                 
-                <div className="mt-8">
+                <div className="mt-8 max-w-4xl mx-auto">
                   <p className="text-sm text-gray-500 mb-1">Includes:</p>
                   <div className="flex flex-wrap gap-3">
                     <span className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-700">Case Law</span>
@@ -311,7 +317,7 @@ const LegalAssistant = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex-grow p-4 md:p-5 overflow-y-auto">
+              <div className="flex-grow p-4 md:p-5 overflow-y-auto bg-gray-50">
                 <div className="space-y-4 max-w-4xl mx-auto">
                   {messages.map((msg) => (
                     <ChatBubble 
@@ -323,7 +329,14 @@ const LegalAssistant = () => {
                   ))}
                   
                   {isTyping && messages[messages.length - 1]?.isUser && (
-                    <ChatBubble message="" isUser={false} isTyping={true} />
+                    <div className="chat-bubble chat-bubble-assistant flex items-center gap-1">
+                      <span className="text-gray-600">Thinking</span>
+                      <span className="flex space-x-1">
+                        {[...Array(5)].map((_, i) => (
+                          <span key={i} className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: `${i * 0.15}s` }}></span>
+                        ))}
+                      </span>
+                    </div>
                   )}
                   <div ref={messagesEndRef} />
                 </div>
@@ -331,7 +344,7 @@ const LegalAssistant = () => {
             )}
             
             {/* Footer with input */}
-            <div className="border-t p-3 md:p-4">
+            <div className="border-t p-3 md:p-4 bg-white">
               <div className="max-w-4xl mx-auto">
                 <div className="flex flex-wrap mb-3 gap-2">
                   {["Match Law", "Match Case", "Match Journal"].map(option => (
@@ -340,7 +353,7 @@ const LegalAssistant = () => {
                       onClick={() => toggleMatchOption(option)}
                       className={`px-3 py-1 text-xs rounded-full flex items-center gap-1
                         ${selectedMatchOptions.includes(option) 
-                          ? 'bg-[#D4AF37] text-white' 
+                          ? 'bg-[#cc9c24] text-white' 
                           : 'bg-gray-100 text-gray-700'}`}
                     >
                       {selectedMatchOptions.includes(option) && <Check className="w-3 h-3" />}
@@ -349,7 +362,7 @@ const LegalAssistant = () => {
                   ))}
                 </div>
                 
-                {activeTab === 'documents' && (
+                {(activeTab === 'documents' || activeTab === 'summarize') && (
                   <div className="mb-4">
                     <div className="mb-3">
                       <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Documents:</p>
@@ -369,7 +382,7 @@ const LegalAssistant = () => {
                     </div>
                     <Button 
                       onClick={() => fileInputRef.current?.click()}
-                      className="bg-[#D4AF37] hover:bg-[#D4AF37]/90 text-white w-full flex items-center justify-center gap-2"
+                      className="bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white py-2 px-4 rounded flex items-center justify-center gap-2 text-sm"
                     >
                       <Upload className="h-4 w-4" />
                       Upload Document
@@ -384,7 +397,7 @@ const LegalAssistant = () => {
                   </div>
                 )}
                 
-                <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]/30">
+                <div className="flex items-center gap-2 bg-gray-50 rounded border focus-within:border-[#cc9c24] focus-within:ring-1 focus-within:ring-[#cc9c24]/30">
                   <input
                     type="text"
                     value={inputValue}
@@ -406,7 +419,7 @@ const LegalAssistant = () => {
                   />
                   {(activeTab === 'summarize' || activeTab === 'documents') && (
                     <button 
-                      className="p-2 text-gray-500 hover:text-[#D4AF37]"
+                      className="p-2 text-gray-500 hover:text-[#cc9c24]"
                       onClick={() => fileInputRef.current?.click()}
                     >
                       <Paperclip className="w-5 h-5" />
@@ -414,7 +427,7 @@ const LegalAssistant = () => {
                   )}
                   <button 
                     onClick={handleSendMessage}
-                    className="bg-[#D4AF37] text-white p-2 m-1 rounded-full hover:bg-[#D4AF37]/80"
+                    className="bg-[#cc9c24] text-white p-2 m-1 rounded-full hover:bg-[#cc9c24]/80"
                   >
                     <Send className="w-5 h-5" />
                   </button>

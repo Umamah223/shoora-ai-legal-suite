@@ -54,12 +54,12 @@ export default {
           foreground: "hsl(var(--card-foreground))"
         },
         gold: {
-          DEFAULT: "#D4AF37",
+          DEFAULT: "#cc9c24", // Updated to darker gold
           light: "#F5D76E",
           dark: "#996515",
         },
         shoora: {
-          gold: "#D4AF37",
+          gold: "#cc9c24", // Updated to darker gold
           lightgold: "#F5D76E",
           white: "#FFFFFF",
           offwhite: "#F9F9F9",

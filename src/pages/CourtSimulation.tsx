@@ -40,18 +40,6 @@ const CourtSimulation = () => {
       content: "Your Honor, my client entered into a service agreement with Afaq Corp for software development. Despite delivering the work, the defendant has failed to pay the agreed amount of AED 75,000.",
       sender: "Rafat (Plaintiff)",
       role: 'plaintiff'
-    },
-    {
-      id: '3',
-      content: "Thank you. Defense, your response?",
-      sender: "Hon. Jamal Al-Mahdi",
-      role: 'judge'
-    },
-    {
-      id: '4',
-      content: "Your Honor, we dispute this claim. The deliverables did not meet the quality standards specified in our agreement, justifying our decision to withhold payment.",
-      sender: "Rooz (Representing Afaq)",
-      role: 'defense'
     }
   ]);
   
@@ -59,7 +47,7 @@ const CourtSimulation = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [caseType, setCaseType] = useState('contract');
   const [difficultyLevel, setDifficultyLevel] = useState('beginner');
-  const [userRole, setUserRole] = useState('observer');
+  const [userRole, setUserRole] = useState('defense');
   const [isMobileControlsOpen, setIsMobileControlsOpen] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -135,8 +123,8 @@ const CourtSimulation = () => {
     const userMessage: Message = {
       id: Date.now().toString(),
       content: userInput,
-      sender: "You",
-      role: 'user'
+      sender: "You (Defense)",
+      role: 'defense'
     };
     
     setMessages((prev) => [...prev, userMessage]);
@@ -153,33 +141,14 @@ const CourtSimulation = () => {
       setTimeout(() => {
         const judgeResponse: Message = {
           id: (Date.now() + 1).toString(),
-          content: "Thank you for your input. Under UAE Civil Code Article 246, contracts must be performed according to their contents. Based on the evidence presented, I'll now consider both perspectives on the quality standards dispute.",
+          content: "Thank you for your statement. Under UAE Civil Code Article 246, contracts must be performed according to their contents. Based on the evidence presented, I'll now consider both perspectives on the quality standards dispute.",
           sender: "Hon. Jamal Al-Mahdi",
           role: 'judge'
         };
         
         setMessages((prev) => [...prev, judgeResponse]);
         setIsTyping(false);
-        
-        // Switch to defense after judge finishes
-        setTimeout(() => {
-          setActiveSpeaker('3');
-          setIsTyping(true);
-          
-          setTimeout(() => {
-            const defenseResponse: Message = {
-              id: (Date.now() + 2).toString(),
-              content: "Your Honor, I'd like to present documentation showing that the deliverables failed to meet the quality standards specified in section 3.1 of our agreement. UAE Civil Code Article 272 provides that a contract may be set aside if obligations aren't fulfilled.",
-              sender: "Rooz (Representing Afaq)",
-              role: 'defense'
-            };
-            
-            setMessages((prev) => [...prev, defenseResponse]);
-            setIsTyping(false);
-            
-            setTimeout(() => setActiveSpeaker(null), 1000);
-          }, 2000);
-        }, 2000);
+        setActiveSpeaker(null);
       }, 2000);
     }, 1500);
   };
@@ -193,36 +162,21 @@ const CourtSimulation = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      <main className="flex-grow bg-gray-100 py-8 px-4">
+      <main className="flex-grow bg-gray-100 py-6 px-4">
         <div className="container mx-auto max-w-6xl">
-          <motion.h1 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl md:text-4xl font-bold text-center mb-4"
-          >
+          <h1 className="text-3xl md:text-4xl font-bold text-center mb-4">
             Virtual Court Simulation
-          </motion.h1>
+          </h1>
           
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-gray-600 text-center mb-8 max-w-3xl mx-auto"
-          >
+          <p className="text-gray-600 text-center mb-6 max-w-3xl mx-auto">
             Experience an immersive virtual courtroom environment based on UAE legal proceedings
-          </motion.p>
+          </p>
           
           <div className="flex flex-col lg:flex-row gap-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="lg:w-2/3 bg-white rounded-lg overflow-hidden shadow-lg"
-            >
+            <div className="lg:w-2/3 bg-white rounded-lg overflow-hidden shadow-lg">
               {/* Courtroom Scene */}
               <div className="relative">
-                <div className="w-full h-[400px] relative overflow-hidden">
+                <div className="w-full h-[350px] relative overflow-hidden">
                   {/* Courtroom background */}
                   <img 
                     src="/lovable-uploads/a945de97-dcce-44e2-aca2-dd1c7bf05463.png" 
@@ -235,14 +189,14 @@ const CourtSimulation = () => {
                   
                   {/* Chat bubbles overlaid on the courtroom */}
                   <div className="absolute inset-0 p-4 overflow-y-auto">
-                    <div className="space-y-4 mb-24 pt-8">
+                    <div className="space-y-4 mb-16 pt-4">
                       {messages.map((msg) => (
                         <AnimatePresence key={msg.id} mode="wait">
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.3 }}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
                             className={`max-w-[80%] md:max-w-[60%] ${
                               msg.role === 'judge' 
                                 ? 'mx-auto' 
@@ -281,8 +235,8 @@ const CourtSimulation = () => {
                       <Textarea
                         value={userInput}
                         onChange={(e) => setUserInput(e.target.value)}
-                        placeholder="Type your response as the selected role..."
-                        className="min-h-[70px] resize-none"
+                        placeholder="Type your defense statement..."
+                        className="min-h-[60px] resize-none"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
@@ -292,7 +246,7 @@ const CourtSimulation = () => {
                       />
                       <Button 
                         onClick={handleUserMessage}
-                        className="bg-[#D4AF37] hover:bg-[#B7973A] text-white self-end"
+                        className="bg-[#cc9c24] hover:bg-[#B7973A] text-white self-end"
                       >
                         <Send className="h-4 w-4" />
                       </Button>
@@ -300,26 +254,21 @@ const CourtSimulation = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
             
             {/* Mobile toggle for controls */}
             <button
-              className="lg:hidden bg-[#D4AF37] text-white p-3 rounded-lg mb-4 flex items-center justify-center mx-auto"
+              className="lg:hidden bg-[#cc9c24] text-white p-3 rounded-lg mb-4 flex items-center justify-center mx-auto"
               onClick={() => setIsMobileControlsOpen(!isMobileControlsOpen)}
             >
               {isMobileControlsOpen ? 'Hide Controls' : 'Show Simulation Controls'}
             </button>
             
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className={`lg:w-1/3 space-y-5 ${isMobileControlsOpen ? 'block' : 'hidden lg:block'}`}
-            >
+            <div className={`lg:w-1/3 space-y-5 ${isMobileControlsOpen ? 'block' : 'hidden lg:block'}`}>
               {/* Simulation controls */}
               <div className="bg-white p-5 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
-                  <Settings className="w-5 h-5 text-[#D4AF37]" />
+                  <Settings className="w-5 h-5 text-[#cc9c24]" />
                   Simulation Settings
                 </h3>
                 
@@ -329,7 +278,7 @@ const CourtSimulation = () => {
                       Case Type
                     </label>
                     <select 
-                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#cc9c24] focus:border-transparent"
                       value={caseType}
                       onChange={(e) => setCaseType(e.target.value)}
                     >
@@ -344,7 +293,7 @@ const CourtSimulation = () => {
                       Difficulty Level
                     </label>
                     <select 
-                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#cc9c24] focus:border-transparent"
                       value={difficultyLevel}
                       onChange={(e) => setDifficultyLevel(e.target.value)}
                     >
@@ -359,7 +308,7 @@ const CourtSimulation = () => {
                       Your Role
                     </label>
                     <select 
-                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#D4AF37] focus:border-transparent"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#cc9c24] focus:border-transparent"
                       value={userRole}
                       onChange={(e) => setUserRole(e.target.value)}
                     >
@@ -370,7 +319,7 @@ const CourtSimulation = () => {
                   </div>
                   
                   <div className="pt-2">
-                    <button className="w-full bg-[#D4AF37] text-white py-2 rounded hover:bg-[#D4AF37]/80 transition-colors">
+                    <button className="w-full bg-[#cc9c24] text-white py-2 rounded hover:bg-[#cc9c24]/80 transition-colors">
                       Start New Simulation
                     </button>
                   </div>
@@ -380,7 +329,7 @@ const CourtSimulation = () => {
               {/* Participants */}
               <div className="bg-white p-5 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
-                  <Users className="w-5 h-5 text-[#D4AF37]" />
+                  <Users className="w-5 h-5 text-[#cc9c24]" />
                   Participants
                 </h3>
                 
@@ -402,7 +351,7 @@ const CourtSimulation = () => {
               {/* Legal References */}
               <div className="bg-white p-5 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-800">
-                  <FileText className="w-5 h-5 text-[#D4AF37]" />
+                  <FileText className="w-5 h-5 text-[#cc9c24]" />
                   UAE Legal References
                 </h3>
                 
@@ -417,47 +366,10 @@ const CourtSimulation = () => {
                     <p className="text-gray-600">If either party fails to perform, the contract may be rescinded or enforced with compensation.</p>
                   </div>
                   
-                  <div className="p-2.5 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors">
-                    <p className="font-semibold">UAE Commercial Code Article 102</p>
-                    <p className="text-gray-600">Disputes regarding commercial contracts must be decided in accordance with contractual terms.</p>
-                  </div>
-                  
-                  <button className="w-full text-[#D4AF37] text-center pt-2 hover:underline font-medium">
+                  <button className="w-full text-[#cc9c24] text-center pt-2 hover:underline font-medium">
                     View more legal references
                   </button>
                 </div>
-              </div>
-            </motion.div>
-          </div>
-          
-          <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">About This Simulation</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-gray-700">
-                  <Info className="w-5 h-5 text-[#D4AF37]" />
-                  Learning Objectives
-                </h3>
-                <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                  <li>Practice constructing persuasive legal arguments based on UAE law</li>
-                  <li>Gain familiarity with UAE court procedures and etiquette</li>
-                  <li>Learn how to respond to opposing counsel's arguments</li>
-                  <li>Understand how courts evaluate contractual disputes under UAE Civil Code</li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-medium mb-2 flex items-center gap-2 text-gray-700">
-                  <Award className="w-5 h-5 text-[#D4AF37]" />
-                  Case Details
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  This simulation involves a contract dispute under UAE law. The plaintiff claims non-payment for services rendered, while the defense argues that performance benchmarks were not met as required by the contract.
-                </p>
-                <p className="text-gray-700">
-                  Practice constructing arguments based on UAE Civil Code Articles 246 and 272, which govern contractual obligations and remedies.
-                </p>
               </div>
             </div>
           </div>
