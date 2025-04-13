@@ -49,11 +49,11 @@
 
 @layer components {
   .shoora-btn-primary {
-    @apply bg-gold hover:bg-gold-dark text-white font-semibold py-2 px-6 rounded-md transition-all duration-300 flex items-center gap-2;
+    @apply bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white font-semibold py-2 px-6 rounded-md transition-all duration-300 flex items-center gap-2;
   }
 
   .shoora-btn-secondary {
-    @apply border-2 border-gold text-gold hover:bg-gold/10 font-semibold py-2 px-6 rounded-md transition-all duration-300 flex items-center gap-2;
+    @apply border-2 border-[#cc9c24] text-[#cc9c24] hover:bg-[#cc9c24]/10 font-semibold py-2 px-6 rounded-md transition-all duration-300 flex items-center gap-2;
   }
 
   .shoora-card {
@@ -61,15 +61,15 @@
   }
 
   .shoora-feature-icon {
-    @apply text-gold h-8 w-8;
+    @apply text-[#cc9c24] h-8 w-8;
   }
 
   .shoora-nav-link {
-    @apply text-gray-700 hover:text-gold transition-colors duration-300;
+    @apply text-gray-700 hover:text-[#cc9c24] transition-colors duration-300;
   }
 
   .shoora-input {
-    @apply border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-gold/50;
+    @apply border border-gray-300 rounded-lg p-2.5 focus:outline-none focus:ring-2 focus:ring-[#cc9c24]/50;
   }
 
   .shoora-dropdown {
@@ -85,7 +85,7 @@
   }
 
   .chat-bubble-assistant {
-    @apply bg-shoora-gold/10 text-shoora-darkgray mr-auto;
+    @apply bg-[#cc9c24]/10 text-shoora-darkgray mr-auto;
   }
 
   .typing-indicator::after {

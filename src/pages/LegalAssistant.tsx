@@ -367,7 +367,17 @@ const LegalAssistant = () => {
                     <div className="mb-3">
                       <p className="text-sm font-medium text-gray-700 mb-2">Uploaded Documents:</p>
                       {uploadedDocuments.length === 0 ? (
-                        <p className="text-sm text-gray-500">No documents uploaded yet.</p>
+                        <div className="flex flex-col items-start">
+                          <p className="text-sm text-gray-500 mb-2">No documents uploaded yet.</p>
+                          <Button 
+                            onClick={() => fileInputRef.current?.click()}
+                            className="bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white py-1.5 px-4 rounded text-sm"
+                            size="sm"
+                          >
+                            <Upload className="h-3 w-3 mr-1" />
+                            Upload Document
+                          </Button>
+                        </div>
                       ) : (
                         <div className="space-y-2">
                           {uploadedDocuments.map((doc, index) => (
@@ -377,23 +387,17 @@ const LegalAssistant = () => {
                               <span className="ml-auto text-xs text-gray-500">{(doc.size / 1024).toFixed(1)} KB</span>
                             </div>
                           ))}
+                          <Button 
+                            onClick={() => fileInputRef.current?.click()}
+                            className="bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white py-1.5 px-4 rounded text-sm mt-2"
+                            size="sm"
+                          >
+                            <Upload className="h-3 w-3 mr-1" />
+                            Upload More
+                          </Button>
                         </div>
                       )}
                     </div>
-                    <Button 
-                      onClick={() => fileInputRef.current?.click()}
-                      className="bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white py-2 px-4 rounded flex items-center justify-center gap-2 text-sm"
-                    >
-                      <Upload className="h-4 w-4" />
-                      Upload Document
-                    </Button>
-                    <input 
-                      type="file" 
-                      ref={fileInputRef} 
-                      className="hidden" 
-                      onChange={handleFileUpload} 
-                      multiple
-                    />
                   </div>
                 )}
                 
@@ -456,6 +460,13 @@ const LegalAssistant = () => {
       </main>
       
       <Footer />
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        className="hidden" 
+        onChange={handleFileUpload} 
+        multiple
+      />
     </div>
   );
 };

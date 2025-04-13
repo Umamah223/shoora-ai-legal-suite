@@ -1,12 +1,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight, ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BookCard from '@/components/BookCard';
 import TopicCard from '@/components/TopicCard';
+import { Input } from '@/components/ui/input';
 
 // Sample data
 const legalTopics = [
@@ -94,14 +95,35 @@ const Library = () => {
       
       <main className="flex-grow bg-white">
         <div className="container mx-auto max-w-7xl px-4 py-8">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl font-bold text-center mb-4"
-          >
-            Law
-          </motion.h1>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div className="flex items-center gap-3 mb-4 md:mb-0">
+              <BookOpen className="text-[#cc9c24] h-8 w-8" />
+              <div>
+                <motion.h1
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-3xl md:text-4xl font-bold text-left"
+                >
+                  AI Powered Legal Library
+                </motion.h1>
+                <p className="text-gray-600 text-sm md:text-base">Access comprehensive legal resources with advanced AI search capabilities.</p>
+              </div>
+            </div>
+            
+            <div className="w-full md:w-auto">
+              <div className="relative w-full md:w-80">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input 
+                  type="text" 
+                  placeholder="Search by author, ISBN & topic" 
+                  className="pl-10 pr-4 py-2 w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
           
           <div className="flex border-b border-gray-200 mb-8">
             <button
@@ -137,7 +159,7 @@ const Library = () => {
             className="bg-gray-100 rounded-lg p-6 mb-8"
           >
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-shoora-gold text-xl">✦</span>
+              <span className="text-[#cc9c24] text-xl">✦</span>
               <h2 className="text-xl font-semibold">Dive deeper with our AI-powered index</h2>
             </div>
             <p className="text-gray-700">
@@ -151,7 +173,7 @@ const Library = () => {
               <div className="mb-12">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold">Find by topic</h2>
-                  <button className="text-shoora-gold font-medium">View all</button>
+                  <button className="text-[#cc9c24] font-medium">View all</button>
                 </div>
                 
                 <div className="relative">
@@ -183,113 +205,121 @@ const Library = () => {
               <div className="mb-12">
                 <h2 className="text-xl font-semibold mb-4">Find by Jurisdiction, Date and language</h2>
                 
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <div className="relative">
-                    <button
-                      className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[180px]"
-                      onClick={() => setShowJurisdictionDropdown(!showJurisdictionDropdown)}
-                    >
-                      <span>{selectedJurisdiction}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
-                    
-                    {showJurisdictionDropdown && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                        {['UAE', 'Saudi Arabia', 'Qatar', 'Kuwait', 'USA', 'UK'].map((item) => (
-                          <div
-                            key={item}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => {
-                              setSelectedJurisdiction(item);
-                              setShowJurisdictionDropdown(false);
-                            }}
-                          >
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                <div className="flex flex-wrap items-center justify-end gap-4 mb-6">
+                  <img 
+                    src="/lovable-uploads/5c9969f1-298b-49e9-a8ca-641b262bd4c6.png" 
+                    alt="Filter options" 
+                    className="w-full md:w-auto h-auto"
+                  />
                   
-                  <div className="relative">
-                    <button
-                      className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[180px]"
-                      onClick={() => setShowMonthDropdown(!showMonthDropdown)}
-                    >
-                      <span>{selectedMonth}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
+                  <div className="hidden">
+                    <div className="relative">
+                      <button
+                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[180px]"
+                        onClick={() => setShowJurisdictionDropdown(!showJurisdictionDropdown)}
+                      >
+                        <span>{selectedJurisdiction}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                      
+                      {showJurisdictionDropdown && (
+                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                          {['UAE', 'Saudi Arabia', 'Qatar', 'Kuwait', 'USA', 'UK'].map((item) => (
+                            <div
+                              key={item}
+                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => {
+                                setSelectedJurisdiction(item);
+                                setShowJurisdictionDropdown(false);
+                              }}
+                            >
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                     
-                    {showMonthDropdown && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                        {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((item) => (
-                          <div
-                            key={item}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => {
-                              setSelectedMonth(item);
-                              setShowMonthDropdown(false);
-                            }}
-                          >
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="relative">
-                    <button
-                      className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[120px]"
-                      onClick={() => setShowYearDropdown(!showYearDropdown)}
-                    >
-                      <span>{selectedYear}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
+                    <div className="relative">
+                      <button
+                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[180px]"
+                        onClick={() => setShowMonthDropdown(!showMonthDropdown)}
+                      >
+                        <span>{selectedMonth}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                      
+                      {showMonthDropdown && (
+                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                          {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map((item) => (
+                            <div
+                              key={item}
+                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => {
+                                setSelectedMonth(item);
+                                setShowMonthDropdown(false);
+                              }}
+                            >
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                     
-                    {showYearDropdown && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                        {Array.from({ length: 30 }, (_, i) => 2024 - i).map((year) => (
-                          <div
-                            key={year}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => {
-                              setSelectedYear(year.toString());
-                              setShowYearDropdown(false);
-                            }}
-                          >
-                            {year}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="relative">
-                    <button
-                      className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[150px]"
-                      onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-                    >
-                      <span>{selectedLanguage}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </button>
+                    <div className="relative">
+                      <button
+                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[120px]"
+                        onClick={() => setShowYearDropdown(!showYearDropdown)}
+                      >
+                        <span>{selectedYear}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                      
+                      {showYearDropdown && (
+                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                          {Array.from({ length: 30 }, (_, i) => 2024 - i).map((year) => (
+                            <div
+                              key={year}
+                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => {
+                                setSelectedYear(year.toString());
+                                setShowYearDropdown(false);
+                              }}
+                            >
+                              {year}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                     
-                    {showLanguageDropdown && (
-                      <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                        {['English', 'Arabic', 'Spanish', 'French', 'German'].map((item) => (
-                          <div
-                            key={item}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => {
-                              setSelectedLanguage(item);
-                              setShowLanguageDropdown(false);
-                            }}
-                          >
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className="relative">
+                      <button
+                        className="flex items-center justify-between gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white min-w-[150px]"
+                        onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+                      >
+                        <span>{selectedLanguage}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                      
+                      {showLanguageDropdown && (
+                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                          {['English', 'Arabic', 'Spanish', 'French', 'German'].map((item) => (
+                            <div
+                              key={item}
+                              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                              onClick={() => {
+                                setSelectedLanguage(item);
+                                setShowLanguageDropdown(false);
+                              }}
+                            >
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -332,14 +362,14 @@ const Library = () => {
             <div className="mb-12">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Labor Law Subtopics</h2>
-                <button className="text-shoora-gold font-medium">View all</button>
+                <button className="text-[#cc9c24] font-medium">View all</button>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {subtopics.map((subtopic) => (
                   <div 
                     key={subtopic.id} 
-                    className="p-4 border border-gray-200 rounded-lg hover:border-shoora-gold hover:shadow-md transition-all"
+                    className="p-4 border border-gray-200 rounded-lg hover:border-[#cc9c24] hover:shadow-md transition-all"
                   >
                     <h3 className="font-medium text-lg">{subtopic.title}</h3>
                     <p className="text-sm text-gray-500">{subtopic.count}</p>
@@ -392,7 +422,7 @@ const Library = () => {
                 <p className="text-gray-600">and seamless access to case laws, documents, and training materials.</p>
               </div>
               <Link to="/assistant">
-                <button className="shoora-btn-primary">
+                <button className="shoora-btn-primary bg-[#cc9c24] hover:bg-[#cc9c24]/90">
                   Try AI Assistant <ArrowRight className="h-4 w-4" />
                 </button>
               </Link>
