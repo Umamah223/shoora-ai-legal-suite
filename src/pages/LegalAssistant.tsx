@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { MessageSquare, FileText, Upload, Paperclip, Send, ChevronDown, Info, Check, Link, File } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -47,6 +46,44 @@ const LegalAssistant = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useIsMobile();
   
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      setUploadedDocuments(prev => [...prev, ...newFiles]);
+      
+      const fileNames = newFiles.map(file => file.name).join(", ");
+      const userMessage = {
+        id: Date.now().toString(),
+        content: `I've uploaded: ${fileNames}`,
+        isUser: true
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      setIsTyping(true);
+      
+      setTimeout(() => {
+        let aiResponse;
+        
+        if (activeTab === 'summarize') {
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            content: `I've analyzed your document${newFiles.length > 1 ? 's' : ''}: ${fileNames}. Here's a summary:\n\nThe Federal Decree-Law No. (40) of 2023 establishes a comprehensive legal framework for resolving civil and commercial disputes in the UAE through mediation and conciliation. It defines mediation as a voluntary or court-ordered method for amicably resolving disputes with the help of a neutral third party, while conciliation is a mandatory pre-litigation step in certain cases. The law allows for the creation of Mediation and Conciliation Centers by federal or local judicial authorities, and supports the use of electronic platforms for remote sessions. Confidentiality is a cornerstone of the process—mediators and conciliators are prohibited from disclosing information, testifying in court, or taking roles that might compromise their neutrality.\n\nThe law distinguishes between consensual mediation, initiated by mutual agreement of the parties, and court-ordered mediation, which may occur during litigation with the parties' consent. Settlement agreements resulting from mediation or conciliation are legally binding and carry the force of a court judgment once ratified.`,
+            isUser: false
+          };
+        } else {
+          aiResponse = {
+            id: (Date.now() + 1).toString(),
+            content: `I've received your document${newFiles.length > 1 ? 's' : ''}: ${fileNames}. What would you like me to do with ${newFiles.length > 1 ? 'them' : 'it'}? I can summarize the content, extract key information, or answer specific questions about the document.`,
+            isUser: false
+          };
+        }
+        
+        setMessages(prev => [...prev, aiResponse]);
+        setIsTyping(false);
+      }, 2000);
+    }
+  };
+  
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
     
@@ -60,16 +97,35 @@ const LegalAssistant = () => {
     setInputValue('');
     setIsTyping(true);
     
-    // Simulate AI response delay
     setTimeout(() => {
       let aiResponse;
       
-      if (activeTab === 'draft' && inputValue.toLowerCase().includes('rental agreement')) {
+      if (inputValue.toLowerCase().includes('summarize') && uploadedDocuments.length > 0) {
         aiResponse = {
           id: (Date.now() + 1).toString(),
-          content: "To get started, could you please provide the following details:\n\n- Full name of the landlord\n- Full name of the tenant\n- Property address\n- Monthly rent amount\n- Duration of the lease (e.g., 12 months, 1 year)\n- Start and end dates of the lease\n- Security deposit amount (if any)\n- Any special terms or conditions (e.g., maintenance responsibilities, renewal clauses)\n\nOnce I have this information, I'll generate a customized rental agreement compliant with UAE laws.",
+          content: `Here's a summary of your document:\n\nThe Federal Decree-Law No. (40) of 2023 establishes a comprehensive legal framework for resolving civil and commercial disputes in the UAE through mediation and conciliation. It defines mediation as a voluntary or court-ordered method for amicably resolving disputes with the help of a neutral third party, while conciliation is a mandatory pre-litigation step in certain cases. The law allows for the creation of Mediation and Conciliation Centers by federal or local judicial authorities, and supports the use of electronic platforms for remote sessions. Confidentiality is a cornerstone of the process—mediators and conciliators are prohibited from disclosing information, testifying in court, or taking roles that might compromise their neutrality.\n\nThe law distinguishes between consensual mediation, initiated by mutual agreement of the parties, and court-ordered mediation, which may occur during litigation with the parties' consent. Settlement agreements resulting from mediation or conciliation are legally binding and carry the force of a court judgment once ratified.`,
           isUser: false
         };
+      } else if (activeTab === 'draft' && inputValue.toLowerCase().includes('rental agreement')) {
+        const userMessage = {
+          id: Date.now().toString(),
+          content: inputValue,
+          isUser: true
+        };
+        
+        setMessages([userMessage]);
+        setIsTyping(true);
+        
+        setTimeout(() => {
+          const aiResponse = {
+            id: (Date.now() + 1).toString(),
+            content: "To get started, could you please provide the following details:\n\n- Full name of the landlord\n- Full name of the tenant\n- Property address\n- Monthly rent amount\n- Duration of the lease (e.g., 12 months, 1 year)\n- Start and end dates of the lease\n- Security deposit amount (if any)\n- Any special terms or conditions (e.g., maintenance responsibilities, renewal clauses)\n\nOnce I have this information, I'll generate a customized rental agreement compliant with UAE laws.",
+            isUser: false
+          };
+          
+          setMessages((prev) => [...prev, aiResponse]);
+          setIsTyping(false);
+        }, 2000);
       } else if (inputValue.toLowerCase().includes('termination') || inputValue.toLowerCase().includes('fire')) {
         aiResponse = {
           id: (Date.now() + 1).toString(),
@@ -117,7 +173,6 @@ const LegalAssistant = () => {
     setMessages([userMessage]);
     setIsTyping(true);
     
-    // Simulate AI response delay
     setTimeout(() => {
       const aiResponse = {
         id: (Date.now() + 1).toString(),
@@ -139,7 +194,6 @@ const LegalAssistant = () => {
   };
   
   useEffect(() => {
-    // Scroll to bottom when messages change
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
@@ -176,63 +230,30 @@ const LegalAssistant = () => {
     ]);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setUploadedDocuments(prev => [...prev, ...newFiles]);
-      
-      // Add a message about the uploaded document
-      const fileNames = newFiles.map(file => file.name).join(", ");
-      const userMessage = {
-        id: Date.now().toString(),
-        content: `I've uploaded: ${fileNames}`,
-        isUser: true
-      };
-      
-      setMessages(prev => [...prev, userMessage]);
-      setIsTyping(true);
-      
-      // Simulate AI response
-      setTimeout(() => {
-        const aiResponse = {
-          id: (Date.now() + 1).toString(),
-          content: `I've received your document${newFiles.length > 1 ? 's' : ''}: ${fileNames}. What would you like me to do with ${newFiles.length > 1 ? 'them' : 'it'}? I can summarize the content, extract key information, or answer specific questions about the document.`,
-          isUser: false
-        };
-        
-        setMessages(prev => [...prev, aiResponse]);
-        setIsTyping(false);
-      }, 2000);
-    }
-  };
-  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-grow flex flex-col bg-white">
         <div className="w-full h-full flex">
-          {/* Left sidebar */}
           <div className="w-16 md:w-20 bg-gray-100 border-r flex flex-col items-center py-5 hidden md:flex">
             <div className="w-10 h-10 rounded-full bg-[#cc9c24]/20 flex items-center justify-center mb-8">
               <span className="font-bold text-[#987B30]">P</span>
             </div>
             
             <div className="space-y-8 mt-4">
-              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#cc9c24] transition-colors">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer text-[#cc9c24] transition-colors">
                 <MessageSquare className="w-5 h-5" />
                 <span className="text-xs mt-1">Chat</span>
               </div>
-              <div className="flex flex-col items-center text-gray-500 cursor-pointer hover:text-[#cc9c24] transition-colors">
+              <div className="flex flex-col items-center text-gray-500 cursor-pointer text-gray-500 transition-colors">
                 <FileText className="w-5 h-5" />
                 <span className="text-xs mt-1">Docs</span>
               </div>
             </div>
           </div>
           
-          {/* Main content area */}
           <div className="flex-grow flex flex-col">
-            {/* Header */}
             <div className="p-4 md:p-5 border-b">
               <h2 className="text-xl font-semibold text-gray-800">Welcome back, Alex</h2>
               <p className="text-gray-600 text-sm">Let's get started. Which legal task can AI accelerate for you today?</p>
@@ -243,7 +264,7 @@ const LegalAssistant = () => {
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'ask' 
                       ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white text-gray-700 border-gray-300'
                   }`}
                 >
                   <MessageSquare className="h-4 w-4 md:h-5 md:w-5" />
@@ -255,7 +276,7 @@ const LegalAssistant = () => {
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'draft' 
                       ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white text-gray-700 border-gray-300'
                   }`}
                 >
                   <FileText className="h-4 w-4 md:h-5 md:w-5" />
@@ -267,7 +288,7 @@ const LegalAssistant = () => {
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'summarize' 
                       ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white text-gray-700 border-gray-300'
                   }`}
                 >
                   <FileText className="h-4 w-4 md:h-5 md:w-5" />
@@ -279,7 +300,7 @@ const LegalAssistant = () => {
                   className={`flex items-center justify-center md:justify-start gap-2 p-2 md:p-3 rounded border text-sm md:text-base ${
                     activeTab === 'documents' 
                       ? 'bg-[#cc9c24] text-white border-[#cc9c24]' 
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                      : 'bg-white text-gray-700 border-gray-300'
                   }`}
                 >
                   <Upload className="h-4 w-4 md:h-5 md:w-5" />
@@ -288,7 +309,6 @@ const LegalAssistant = () => {
               </div>
             </div>
           
-            {/* Chat area */}
             {messages.length === 0 ? (
               <div className="flex-grow p-4 md:p-5 overflow-y-auto bg-gray-50">
                 <div className="mt-2 max-w-4xl mx-auto">
@@ -343,7 +363,6 @@ const LegalAssistant = () => {
               </div>
             )}
             
-            {/* Footer with input */}
             <div className="border-t p-3 md:p-4 bg-white">
               <div className="max-w-4xl mx-auto">
                 <div className="flex flex-wrap mb-3 gap-2">
@@ -371,7 +390,7 @@ const LegalAssistant = () => {
                           <p className="text-sm text-gray-500 mb-2">No documents uploaded yet.</p>
                           <Button 
                             onClick={() => fileInputRef.current?.click()}
-                            className="bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white py-1.5 px-4 rounded text-sm"
+                            className="bg-[#cc9c24] text-white py-1.5 px-4 rounded text-sm"
                             size="sm"
                           >
                             <Upload className="h-3 w-3 mr-1" />
@@ -389,7 +408,7 @@ const LegalAssistant = () => {
                           ))}
                           <Button 
                             onClick={() => fileInputRef.current?.click()}
-                            className="bg-[#cc9c24] hover:bg-[#cc9c24]/90 text-white py-1.5 px-4 rounded text-sm mt-2"
+                            className="bg-[#cc9c24] text-white py-1.5 px-4 rounded text-sm mt-2"
                             size="sm"
                           >
                             <Upload className="h-3 w-3 mr-1" />
@@ -423,7 +442,7 @@ const LegalAssistant = () => {
                   />
                   {(activeTab === 'summarize' || activeTab === 'documents') && (
                     <button 
-                      className="p-2 text-gray-500 hover:text-[#cc9c24]"
+                      className="p-2 text-gray-500"
                       onClick={() => fileInputRef.current?.click()}
                     >
                       <Paperclip className="w-5 h-5" />
@@ -431,7 +450,7 @@ const LegalAssistant = () => {
                   )}
                   <button 
                     onClick={handleSendMessage}
-                    className="bg-[#cc9c24] text-white p-2 m-1 rounded-full hover:bg-[#cc9c24]/80"
+                    className="bg-[#cc9c24] text-white p-2 m-1 rounded-full"
                   >
                     <Send className="w-5 h-5" />
                   </button>
@@ -445,7 +464,7 @@ const LegalAssistant = () => {
                   
                   <div className="flex items-center gap-2">
                     <button 
-                      className="hover:text-gray-700 transition-colors"
+                      className="text-gray-500"
                       onClick={() => setMessages([])}
                     >
                       Clear conversation

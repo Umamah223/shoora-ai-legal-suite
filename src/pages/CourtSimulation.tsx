@@ -16,6 +16,7 @@ interface Message {
   sender: string;
   role: 'judge' | 'plaintiff' | 'defense' | 'user' | 'witness';
   isActive?: boolean;
+  isTyping?: boolean;
 }
 
 interface Participant {
@@ -120,23 +121,31 @@ const CourtSimulation = () => {
   const handleUserMessage = () => {
     if (!userInput.trim()) return;
     
-    // Add user message
+    // Add user message with typing indicator
     const userMessage: Message = {
       id: Date.now().toString(),
       content: userInput,
       sender: "You (Defense)",
-      role: 'defense'
+      role: 'defense',
+      isTyping: true
     };
     
     setMessages((prev) => [...prev, userMessage]);
     setUserInput('');
     setActiveSpeaker('5'); // User is speaking
-    setIsTyping(true);
     
     // Simulate response delay
     setTimeout(() => {
+      // Update the user message to not show typing animation anymore
+      setMessages(prev => 
+        prev.map(msg => 
+          msg.id === userMessage.id 
+            ? { ...msg, isTyping: false } 
+            : msg
+        )
+      );
+      
       setActiveSpeaker('1'); // Judge speaks next
-      setIsTyping(true);
       
       // After a delay for judge to start speaking
       setTimeout(() => {
@@ -144,14 +153,25 @@ const CourtSimulation = () => {
           id: (Date.now() + 1).toString(),
           content: "Thank you for your statement. Under UAE Civil Code Article 246, contracts must be performed according to their contents. Based on the evidence presented, I'll now consider both perspectives on the quality standards dispute.",
           sender: "Hon. Jamal Al-Mahdi",
-          role: 'judge'
+          role: 'judge',
+          isTyping: true
         };
         
         setMessages((prev) => [...prev, judgeResponse]);
-        setIsTyping(false);
-        setActiveSpeaker(null);
-      }, 2000);
-    }, 1500);
+        
+        // After 2 seconds, update the judge's message to remove typing indicator
+        setTimeout(() => {
+          setMessages(prev => 
+            prev.map(msg => 
+              msg.id === judgeResponse.id 
+                ? { ...msg, isTyping: false } 
+                : msg
+            )
+          );
+          setActiveSpeaker(null);
+        }, 2000);
+      }, 1500);
+    }, 2000);
   };
   
   useEffect(() => {
@@ -178,9 +198,9 @@ const CourtSimulation = () => {
           
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="lg:w-2/3 bg-white rounded-lg overflow-hidden shadow-lg">
-              {/* Courtroom Scene - IMPROVED HEIGHT */}
+              {/* Courtroom Scene with increased height */}
               <div className="relative">
-                <div className="w-full h-[450px] relative overflow-hidden">
+                <div className="w-full h-[500px] relative overflow-hidden">
                   {/* Courtroom background with improved size and styling */}
                   <img 
                     src="/lovable-uploads/a945de97-dcce-44e2-aca2-dd1c7bf05463.png" 
@@ -218,7 +238,7 @@ const CourtSimulation = () => {
                               sender={msg.sender}
                               role={msg.role}
                               isActive={activeSpeaker === participants.find(p => p.role === msg.role)?.id}
-                              isTyping={isTyping && msg.id === messages[messages.length - 1].id}
+                              isTyping={msg.isTyping}
                             />
                           </motion.div>
                         </AnimatePresence>

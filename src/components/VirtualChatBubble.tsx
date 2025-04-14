@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle, User } from 'lucide-react';
 
@@ -8,7 +8,7 @@ interface VirtualChatBubbleProps {
   isUser?: boolean;
   timestamp?: string;
   isTyping?: boolean;
-  // Add the new properties required by CourtSimulation
+  // Additional properties for CourtSimulation
   sender?: string;
   role?: 'judge' | 'plaintiff' | 'defense' | 'user' | 'witness';
   isActive?: boolean;
@@ -23,8 +23,27 @@ const VirtualChatBubble: React.FC<VirtualChatBubbleProps> = ({
   role,
   isActive = false,
 }) => {
-  // Just for demonstration, show typing indicator for a few seconds
   const [showTyping, setShowTyping] = useState(isTyping);
+  const [displayMessage, setDisplayMessage] = useState('');
+  
+  // Effect to handle typing animation
+  useEffect(() => {
+    if (isTyping) {
+      setShowTyping(true);
+      setDisplayMessage('');
+      
+      // After 2 seconds, show the actual message
+      const timer = setTimeout(() => {
+        setShowTyping(false);
+        setDisplayMessage(message);
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    } else {
+      setShowTyping(false);
+      setDisplayMessage(message);
+    }
+  }, [isTyping, message]);
 
   // Determine if this is a user message based on role or isUser prop
   const isUserMessage = isUser || role === 'user';
@@ -55,7 +74,6 @@ const VirtualChatBubble: React.FC<VirtualChatBubbleProps> = ({
     }
   };
 
-  // Conditionally render typing indicator or message
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -89,7 +107,7 @@ const VirtualChatBubble: React.FC<VirtualChatBubbleProps> = ({
               <div className="w-2 h-2 bg-current rounded-full animate-pulse" style={{ animationDelay: '400ms' }}></div>
             </div>
           ) : (
-            <p className="whitespace-pre-wrap">{message}</p>
+            <p className="whitespace-pre-wrap">{displayMessage}</p>
           )}
           <div className={`text-xs mt-1 ${isUserMessage ? 'text-white/70' : 'text-gray-500'}`}>{timestamp}</div>
         </div>
