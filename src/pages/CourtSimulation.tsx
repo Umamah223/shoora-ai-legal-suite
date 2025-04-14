@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, MessageSquare, Info, Users, Settings, HelpCircle, FileText, Award, Scale, GavelSquare } from 'lucide-react';
+import { Send, MessageSquare, Info, Users, Settings, HelpCircle, FileText, Award, Scale, Gavel } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -369,7 +369,7 @@ const CourtSimulation = () => {
               <Card className="shadow-md border-gray-200 hover:shadow-lg transition-all">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg font-semibold flex items-center gap-2 text-gray-800">
-                    <GavelSquare className="w-5 h-5 text-[#cc9c24]" />
+                    <Gavel className="w-5 h-5 text-[#cc9c24]" />
                     UAE Legal References
                   </CardTitle>
                 </CardHeader>
