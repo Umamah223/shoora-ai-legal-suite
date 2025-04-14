@@ -198,9 +198,9 @@ const CourtSimulation = () => {
           
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="lg:w-2/3 bg-white rounded-lg overflow-hidden shadow-lg">
-              {/* Courtroom Scene with increased height */}
+              {/* Courtroom Scene with reduced height */}
               <div className="relative">
-                <div className="w-full h-[500px] relative overflow-hidden">
+                <div className="w-full h-[400px] relative overflow-hidden">
                   {/* Courtroom background with improved size and styling */}
                   <img 
                     src="/lovable-uploads/a945de97-dcce-44e2-aca2-dd1c7bf05463.png" 
