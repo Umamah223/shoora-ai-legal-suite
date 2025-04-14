@@ -1,5 +1,6 @@
 
 import { motion } from 'framer-motion';
+import { Card } from '@/components/ui/card';
 
 interface BookCardProps {
   title: string;
@@ -10,6 +11,12 @@ interface BookCardProps {
 }
 
 const BookCard = ({ title, author, year, coverImage, index }: BookCardProps) => {
+  // Handle image error by providing a fallback
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = '/placeholder.svg';
+    e.currentTarget.className = e.currentTarget.className + ' bg-gray-100';
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -23,6 +30,7 @@ const BookCard = ({ title, author, year, coverImage, index }: BookCardProps) => 
           src={coverImage} 
           alt={title} 
           className="w-full h-full object-cover"
+          onError={handleImageError}
         />
       </div>
       <h4 className="font-semibold text-sm line-clamp-2">{title}</h4>
